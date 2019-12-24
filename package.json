@@ -1,6 +1,6 @@
 {
     "name": "tinyield4ts",
-    "version": "0.0.0",
+    "version": "0.1.0",
     "description": "Tinyield is a solution for sequence definition",
     "main": "index.js",
     "types": "index.d.ts",
