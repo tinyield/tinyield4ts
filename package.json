@@ -26,7 +26,14 @@
         }
     ],
     "license": "Apache-2.0",
-    "keywords": ["tinyield", "yield", "sequence", "iterator", "typescript", "tiny"],
+    "keywords": [
+        "tinyield",
+        "yield",
+        "sequence",
+        "iterator",
+        "typescript",
+        "tiny"
+    ],
     "husky": {
         "hooks": {
             "pre-commit": "lint-staged"
@@ -41,18 +48,18 @@
         "copyfiles": "^2.1.1",
         "gts": "^1.1.2",
         "husky": "^3.1.0",
-        "jasmine-core": "^3.1.0",
-        "karma": "^2.0.2",
-        "karma-chrome-launcher": "^2.2.0",
-        "karma-coverage-istanbul-reporter": "~2.0.1",
-        "karma-jasmine": "^1.1.2",
-        "karma-jasmine-html-reporter": "^1.4.0",
-        "karma-spec-reporter": "^0.0.32",
-        "karma-typescript": "^3.0.12",
+        "jasmine-core": "^3.5.0",
+        "karma": "^4.4.1",
+        "karma-chrome-launcher": "^3.1.0",
+        "karma-coverage-istanbul-reporter": "^2.1.1",
+        "karma-jasmine": "^2.0.1",
+        "karma-jasmine-html-reporter": "^1.4.2",
+        "karma-spec-reporter": "0.0.32",
+        "karma-typescript": "^4.1.1",
         "lint-staged": "^9.5.0",
         "mrm": "^2.0.2",
         "tslint": "^5.10.0",
-        "tslint-config-standard-plus": "^1.0.0",
+        "tslint-config-standard-plus": "^2.3.0",
         "typescript": "~3.7.0"
     }
 }

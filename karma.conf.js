@@ -5,7 +5,7 @@ module.exports = function (config) {
     config.set({
         basePath: '',
         files: [
-            './**/*.ts'
+            'src/**/*.ts'
         ],
         karmaTypescriptConfig: {
             tsconfig: "./tsconfig.spec.json",
@@ -23,8 +23,7 @@ module.exports = function (config) {
             clearContext: false // leave Jasmine Spec Runner output visible in browser
         },
         preprocessors: {
-            'src/**/*.ts': [ 'karma-typescript' ],
-            'test/**/*.spec.ts': [ 'karma-typescript' ]
+            'src/**/*.ts': [ 'karma-typescript' ]
         },
         coverageIstanbulReporter: {
             dir: require('path').join(__dirname, './coverage/tinyield'),
