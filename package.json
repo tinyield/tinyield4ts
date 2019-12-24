@@ -2,6 +2,10 @@
     "name": "tinyield4ts",
     "version": "0.1.0",
     "description": "Tinyield is a solution for sequence definition",
+    "repository": {
+        "url": "https://github.com/tinyield/tinyield4ts.git",
+        "type": "git"
+    },
     "main": "index.js",
     "types": "index.d.ts",
     "scripts": {
