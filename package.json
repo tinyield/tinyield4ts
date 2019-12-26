@@ -11,12 +11,13 @@
     "scripts": {
         "snapshot": "npm pack ./dist",
         "test": "karma start",
-        "compile": "tsc -p tsconfig.lib.json",
+        "build": "tsc -p tsconfig.lib.json && copyfiles package.json dist",
         "check": "gts check",
         "clean": "gts clean",
         "fix": "gts fix",
+        "pretest": "npm run clean",
         "precompile": "npm run clean",
-        "presnapshot": "npm run compile && copyfiles package.json dist"
+        "presnapshot": "npm run build"
     },
     "contributors": [
         {
