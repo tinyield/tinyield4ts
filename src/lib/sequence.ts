@@ -2,8 +2,9 @@ import {Yield} from './yield';
 import {Advancer} from './advancer';
 import {AdvancerIterable} from './adv/advancer-iterable';
 import {AdvancerFilter} from './adv/advancer-filter';
+import {AdvancerMap} from './adv/advancer-map';
 
-export class Tinyield<T> extends Advancer<T> {
+export class Sequence<T> extends Advancer<T> {
     protected readonly adv: Advancer<T>;
 
     public constructor(source: Advancer<T>) {
@@ -11,13 +12,13 @@ export class Tinyield<T> extends Advancer<T> {
         this.adv = source;
     }
 
-    public static of<T>(source: T[]): Tinyield<T> {
-        return new Tinyield<T>(new AdvancerIterable(source));
+    public static of<T>(source: T[]): Sequence<T> {
+        return new Sequence<T>(new AdvancerIterable(source));
     }
 
     /**
      * Returns an {@link IteratorResult} that reports either the
-     * next element in this {@code Tinyield} or that there it has
+     * next element in this {@code Sequence} or that there it has
      * reached the end of the elements
      */
     next(): IteratorResult<T, any> {
@@ -43,7 +44,7 @@ export class Tinyield<T> extends Advancer<T> {
     }
 
     /**
-     * Returns an array containing the elements of this Tinyield.
+     * Returns an array containing the elements of this Sequence.
      */
     toArray(): T[] {
         const result: T[] = [];
@@ -52,24 +53,32 @@ export class Tinyield<T> extends Advancer<T> {
     }
 
     /**
-     * Returns a {@code Tinyield} consisting of the elements of this {@code Tinyield},
+     * Returns a {@code Sequence} consisting of the elements of this {@code Sequence},
      * sorted according to the provided Comparator.
      *
      * This is a stateful intermediate operation.
      */
-    sorted(comparator: (a: T, b: T) => number): Tinyield<T> {
-        return new Tinyield<T>(new AdvancerIterable(this.toArray().sort(comparator)));
+    sorted(comparator: (a: T, b: T) => number): Sequence<T> {
+        return new Sequence<T>(new AdvancerIterable(this.toArray().sort(comparator)));
     }
 
     /**
-     * Returns a query consisting of the elements of this Tinyield that match
+     * Returns a query consisting of the elements of this Sequence that match
      * the given predicate.
      */
-    filter(predicate: (elem: T) => boolean): Tinyield<T> {
-        return new Tinyield<T>(new AdvancerFilter(this.adv, predicate));
+    filter(predicate: (elem: T) => boolean): Sequence<T> {
+        return new Sequence<T>(new AdvancerFilter(this.adv, predicate));
+    }
+
+    /**
+     * Returns a Sequence consisting of the results of applying the given
+     * function to the elements of this Sequence.
+     */
+    map<R>(mapper: (elem: T) => R): Sequence<R> {
+        return new Sequence(new AdvancerMap(this.adv, mapper));
     }
 }
 
-export function of<T>(source: T[]): Tinyield<T> {
-    return Tinyield.of(source);
+export function of<T>(source: T[]): Sequence<T> {
+    return Sequence.of(source);
 }

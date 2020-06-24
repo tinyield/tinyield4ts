@@ -1,4 +1,4 @@
-import {of, Tinyield} from './tinyield';
+import {of, Sequence} from './sequence';
 
 class Beverage {
     constructor(public readonly name: string, public readonly cost: number) {}
@@ -19,7 +19,7 @@ describe('Tinyield', () => {
     });
 
     describe('when "of" is called', () => {
-        let sequence: Tinyield<Beverage>;
+        let sequence: Sequence<Beverage>;
 
         beforeEach(() => {
             sequence = of(beverages);
@@ -31,7 +31,7 @@ describe('Tinyield', () => {
         });
 
         describe('when "filter" is called', () => {
-            let filtered: Tinyield<Beverage>;
+            let filtered: Sequence<Beverage>;
 
             beforeEach(() => {
                 filtered = sequence.filter(element => element.cost > 1);
@@ -73,6 +73,57 @@ describe('Tinyield', () => {
                 });
 
                 it('should only have the filtered elements', () => {
+                    expect(actual.length).toEqual(expectation.length);
+                    for (let i = 0; i < actual.length; i++) {
+                        expect(actual[i]).toEqual(expectation[i]);
+                    }
+                });
+            });
+        });
+
+        describe('when "map" is called', () => {
+            let mapped: Sequence<string>;
+
+            beforeEach(() => {
+                mapped = sequence.map(element => element.name);
+            });
+
+            it('should return a new sequence', () => {
+                expect(mapped).not.toEqual(sequence as any);
+            });
+
+            describe('when the sequence is iterated', () => {
+                let expectation: string[];
+                let actual: string[];
+
+                beforeEach(() => {
+                    expectation = beverages.map(element => element.name);
+                    actual = [];
+                    let current: IteratorResult<string, any>;
+                    while (!(current = mapped.next()).done) {
+                        actual.push(current.value as string);
+                    }
+                });
+
+                it('should report the mapped elements', () => {
+                    expect(actual.length).toEqual(expectation.length);
+                    for (let i = 0; i < actual.length; i++) {
+                        expect(actual[i]).toEqual(expectation[i]);
+                    }
+                });
+            });
+
+            describe('when the sequence is traversed', () => {
+                let expectation: string[];
+                let actual: string[];
+
+                beforeEach(() => {
+                    expectation = beverages.map(element => element.name);
+                    actual = [];
+                    mapped.forEach(element => actual.push(element));
+                });
+
+                it('should report the mapped elements', () => {
                     expect(actual.length).toEqual(expectation.length);
                     for (let i = 0; i < actual.length; i++) {
                         expect(actual[i]).toEqual(expectation[i]);
