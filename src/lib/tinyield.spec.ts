@@ -30,6 +30,57 @@ describe('Tinyield', () => {
             expect(packOfBeer).toBeDefined('packOfBeer is undefined');
         });
 
+        describe('when "filter" is called', () => {
+            let filtered: Tinyield<Beverage>;
+
+            beforeEach(() => {
+                filtered = sequence.filter(element => element.cost > 1);
+            });
+
+            it('should return a new sequence', () => {
+                expect(filtered).not.toEqual(sequence);
+            });
+
+            describe('when the sequence is iterated', () => {
+                let expectation: Beverage[];
+                let actual: Beverage[];
+
+                beforeEach(() => {
+                    expectation = [beverages[beverages.length - 1]];
+                    actual = [];
+                    let current: IteratorResult<Beverage, any>;
+                    while (!(current = filtered.next()).done) {
+                        actual.push(current.value as Beverage);
+                    }
+                });
+
+                it('should only have the filtered elements', () => {
+                    expect(actual.length).toEqual(expectation.length);
+                    for (let i = 0; i < actual.length; i++) {
+                        expect(actual[i]).toEqual(expectation[i]);
+                    }
+                });
+            });
+
+            describe('when the sequence is traversed', () => {
+                let expectation: Beverage[];
+                let actual: Beverage[];
+
+                beforeEach(() => {
+                    expectation = [beverages[beverages.length - 1]];
+                    actual = [];
+                    filtered.forEach(element => actual.push(element));
+                });
+
+                it('should only have the filtered elements', () => {
+                    expect(actual.length).toEqual(expectation.length);
+                    for (let i = 0; i < actual.length; i++) {
+                        expect(actual[i]).toEqual(expectation[i]);
+                    }
+                });
+            });
+        });
+
         describe('when "sorted" is called', () => {
             let actual: Beverage[];
             let expected: Beverage[];
