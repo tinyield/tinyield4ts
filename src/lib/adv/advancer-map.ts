@@ -13,11 +13,11 @@ export class AdvancerMap<T, R> implements Advancer<R> {
     }
 
     next(): IteratorResult<R, any> {
-        let curr: IteratorResult<T, any>;
-        while (!(curr = this.upstream.next()).done) {
-            return new IteratorYieldImpl(this.mapper(curr.value as T));
+        const curr: IteratorResult<T, any> = this.upstream.next();
+        if (curr.done) {
+            return new IteratorReturnResultImpl(undefined);
         }
-        return new IteratorReturnResultImpl(undefined);
+        return new IteratorYieldImpl(this.mapper(curr.value as T));
     }
 
     traverse(yld: Yield<R>): void {
