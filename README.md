@@ -3,6 +3,10 @@
 A minimalistic extensible lazy sequence implementation for Typescript and Javascript.
 
 [![npm version](https://badge.fury.io/js/tinyield4ts.svg)](https://badge.fury.io/js/tinyield4ts)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=tinyield_tinyield4ts&metric=alert_status)](https://sonarcloud.io/dashboard?id=tinyield_tinyield4ts)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=tinyield_tinyield4ts&metric=coverage)](https://sonarcloud.io/dashboard?id=tinyield_tinyield4ts)
+[![Bugs](https://sonarcloud.io/api/project_badges/measure?project=tinyield_tinyield4ts&metric=bugs)](https://sonarcloud.io/dashboard?id=tinyield_tinyield4ts)
+[![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=tinyield_tinyield4ts&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=tinyield_tinyield4ts)
  
 ## Usage
 
