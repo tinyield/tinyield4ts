@@ -1,4 +1,5 @@
 import {of, Sequence} from './sequence';
+import {ShortCircuitingError} from './error/short-circuiting-error';
 
 class Beverage {
     constructor(public readonly name: string, public readonly cost: number) {}
@@ -183,6 +184,57 @@ describe('Tinyield', () => {
             });
         });
 
+        describe('when "take" is called', () => {
+            let taken: Sequence<Beverage>;
+
+            beforeEach(() => {
+                taken = sequence.take(2);
+            });
+
+            it('should return a new sequence', () => {
+                expect(taken).not.toEqual(sequence);
+            });
+
+            describe('when the sequence is iterated', () => {
+                let expectation: Beverage[];
+                let actual: Beverage[];
+
+                beforeEach(() => {
+                    expectation = [beverages[0], beverages[1]];
+                    actual = [];
+                    let current: IteratorResult<Beverage, any>;
+                    while (!(current = taken.next()).done) {
+                        actual.push(current.value as Beverage);
+                    }
+                });
+
+                it('should have taken the requested number of elements', () => {
+                    expect(actual.length).toEqual(expectation.length);
+                    for (let i = 0; i < actual.length; i++) {
+                        expect(actual[i]).toEqual(expectation[i]);
+                    }
+                });
+            });
+
+            describe('when the sequence is traversed', () => {
+                let expectation: Beverage[];
+                let actual: Beverage[];
+
+                beforeEach(() => {
+                    expectation = [beverages[0], beverages[1]];
+                    actual = [];
+                    taken.forEach(element => actual.push(element));
+                });
+
+                it('should have taken the requested number of elements', () => {
+                    expect(actual.length).toEqual(expectation.length);
+                    for (let i = 0; i < actual.length; i++) {
+                        expect(actual[i]).toEqual(expectation[i]);
+                    }
+                });
+            });
+        });
+
         describe('when "sorted" is called', () => {
             let actual: Beverage[];
             let expected: Beverage[];
@@ -242,7 +294,7 @@ describe('Tinyield', () => {
                             throw new Error('this is expected');
                         });
                     } catch (e) {
-                        error = e;
+                        error = e as any;
                     }
                 });
 

@@ -4,6 +4,8 @@ import {AdvancerIterable} from './adv/advancer-iterable';
 import {AdvancerFilter} from './adv/advancer-filter';
 import {AdvancerMap} from './adv/advancer-map';
 import {AdvancerSkip} from './adv/advancer-skip';
+import {ShortCircuitingError} from '../public-api';
+import {AdvancerTake} from './adv/advancer-take';
 
 export class Sequence<T> extends Advancer<T> {
     protected readonly adv: Advancer<T>;
@@ -86,6 +88,15 @@ export class Sequence<T> extends Advancer<T> {
     skip(n: number): Sequence<T> {
         return new Sequence<T>(new AdvancerSkip(this.adv, n));
     }
+
+    /**
+     * Returns a Sequence consisting of the elements of this Sequence, truncated
+     * to be no longer than {@code n} in length.
+     */
+    take(n: number): Sequence<T> {
+        return new Sequence<T>(new AdvancerTake(this, n));
+    }
+
     /**
      * Yields elements sequentially in the current thread,
      * until all elements have been processed or the traversal
