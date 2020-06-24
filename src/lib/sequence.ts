@@ -10,6 +10,7 @@ import {AdvancerDistinct} from './adv/advancer-distinct';
 import {AdvancerThen} from './adv/advancer-then';
 import {AdvancerIterator} from './adv/advancer-iterator';
 import {AdvancerZip} from './adv/advancer-zip';
+import {AdvancerFlatmap} from './adv/advancer-flatmap';
 
 export class Sequence<T> extends Advancer<T> {
     protected readonly adv: Advancer<T>;
@@ -170,6 +171,10 @@ export class Sequence<T> extends Advancer<T> {
      */
     zip<U, R>(other: Sequence<U>, zipper: (elem1: T, elem2: U) => R): Sequence<R> {
         return new Sequence<R>(new AdvancerZip(this.adv, other.adv, zipper));
+    }
+
+    flatMap<R>(mapper: (elem: T) => Sequence<R>): Sequence<R> {
+        return new Sequence<R>(new AdvancerFlatmap(this, mapper));
     }
 }
 

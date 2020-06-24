@@ -9,12 +9,11 @@ describe('Tinyield', () => {
     let beverages: Beverage[];
     let packOfBeer: Beverage[];
     const beer = new Beverage('beer', 1);
+    const coffee = new Beverage('coffee', 1);
+    const cola = new Beverage('cola', 1);
+    const wine = new Beverage('wine', 3);
 
     beforeEach(() => {
-        const coffee = new Beverage('coffee', 1);
-        const cola = new Beverage('cola', 1);
-        const wine = new Beverage('wine', 3);
-
         beverages = [coffee, cola, wine];
         packOfBeer = [beer, beer, beer, beer];
     });
@@ -454,6 +453,55 @@ describe('Tinyield', () => {
                     for (let i = 0; i < actual.length; i++) {
                         expect(actual[i][0]).toEqual(expectation[i][0]);
                         expect(actual[i][1]).toEqual(expectation[i][1]);
+                    }
+                });
+            });
+        });
+
+        describe('when "flatMap" is called', () => {
+            let flatMapped: Sequence<Beverage>;
+            let sequenceOfSequences: Sequence<Sequence<Beverage>>;
+            const expectation: Beverage[] = [beer, coffee, cola, wine];
+            beforeEach(() => {
+                sequenceOfSequences = Sequence.of(expectation).map(beverage => Sequence.of([beverage]));
+                flatMapped = sequenceOfSequences.flatMap(t => t);
+            });
+
+            it('should return a new sequence', () => {
+                expect(flatMapped).not.toEqual(sequenceOfSequences as any);
+            });
+
+            describe('when the sequence is iterated', () => {
+                let actual: Beverage[];
+
+                beforeEach(() => {
+                    actual = [];
+                    let current: IteratorResult<Beverage, any>;
+                    while (!(current = flatMapped.next()).done) {
+                        actual.push(current.value as Beverage);
+                    }
+                });
+
+                it('should report elements', () => {
+                    expect(actual.length).toEqual(expectation.length);
+                    for (let i = 0; i < actual.length; i++) {
+                        expect(actual[i]).toEqual(expectation[i]);
+                    }
+                });
+            });
+
+            describe('when the sequence is traversed', () => {
+                let actual: Beverage[];
+
+                beforeEach(() => {
+                    actual = [];
+                    flatMapped.forEach(element => actual.push(element));
+                });
+
+                it('should report elements', () => {
+                    expect(actual.length).toEqual(expectation.length);
+                    for (let i = 0; i < actual.length; i++) {
+                        expect(actual[i]).toEqual(expectation[i]);
                     }
                 });
             });
