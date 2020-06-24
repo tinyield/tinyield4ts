@@ -401,6 +401,64 @@ describe('Tinyield', () => {
             });
         });
 
+        describe('when "zip" is called', () => {
+            let zipped: Sequence<Beverage[]>;
+            beforeEach(() => {
+                zipped = sequence.zip(beerSequence, (elem1, elem2) => [elem1, elem2]);
+            });
+
+            it('should return a new sequence', () => {
+                expect(zipped).not.toEqual(sequence as any);
+            });
+
+            describe('when the sequence is iterated', () => {
+                let expectation: Beverage[][];
+                let actual: Beverage[][];
+
+                beforeEach(() => {
+                    expectation = [];
+                    beverages.forEach(value => {
+                        expectation.push([value, beer]);
+                    });
+                    actual = [];
+                    let current: IteratorResult<Beverage[], any>;
+                    while (!(current = zipped.next()).done) {
+                        actual.push(current.value as Beverage[]);
+                    }
+                });
+
+                it('should report elements', () => {
+                    expect(actual.length).toEqual(expectation.length);
+                    for (let i = 0; i < actual.length; i++) {
+                        expect(actual[i][0]).toEqual(expectation[i][0]);
+                        expect(actual[i][1]).toEqual(expectation[i][1]);
+                    }
+                });
+            });
+
+            describe('when the sequence is traversed', () => {
+                let expectation: Beverage[][];
+                let actual: Beverage[][];
+
+                beforeEach(() => {
+                    expectation = [];
+                    beverages.forEach(value => {
+                        expectation.push([value, beer]);
+                    });
+                    actual = [];
+                    zipped.forEach(element => actual.push(element));
+                });
+
+                it('should report elements', () => {
+                    expect(actual.length).toEqual(expectation.length);
+                    for (let i = 0; i < actual.length; i++) {
+                        expect(actual[i][0]).toEqual(expectation[i][0]);
+                        expect(actual[i][1]).toEqual(expectation[i][1]);
+                    }
+                });
+            });
+        });
+
         describe('when "forEach" is called', () => {
             let actual: Beverage[];
 

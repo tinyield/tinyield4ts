@@ -9,6 +9,7 @@ import {AdvancerTake} from './adv/advancer-take';
 import {AdvancerDistinct} from './adv/advancer-distinct';
 import {AdvancerThen} from './adv/advancer-then';
 import {AdvancerIterator} from './adv/advancer-iterator';
+import {AdvancerZip} from './adv/advancer-zip';
 
 export class Sequence<T> extends Advancer<T> {
     protected readonly adv: Advancer<T>;
@@ -161,6 +162,14 @@ export class Sequence<T> extends Advancer<T> {
      */
     then<U>(next: (source: Sequence<T>) => Traverser<U>): Sequence<U> {
         return new Sequence<U>(new AdvancerThen(this, next));
+    }
+
+    /**
+     * Applies a specified function to the corresponding elements of two
+     * sequences, producing a sequence of the results.
+     */
+    zip<U, R>(other: Sequence<U>, zipper: (elem1: T, elem2: U) => R): Sequence<R> {
+        return new Sequence<R>(new AdvancerZip(this.adv, other.adv, zipper));
     }
 }
 
