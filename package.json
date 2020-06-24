@@ -12,6 +12,7 @@
         "snapshot": "npm pack ./dist",
         "test": "karma start",
         "build": "tsc -p tsconfig.lib.json && copyfiles package.json dist",
+        "sonar": "node analyse.js",
         "check": "gts check",
         "clean": "gts clean",
         "fix": "gts fix",
@@ -27,7 +28,8 @@
         },
         {
             "name": "Diogo Poeira",
-            "email": "diogopoeira91@gmail.com"
+            "email": "diogopoeira91@gmail.com",
+            "url": "https://www.linkedin.com/in/dpoeira91/"
         }
     ],
     "license": "Apache-2.0",
@@ -63,8 +65,9 @@
         "karma-typescript": "^4.1.1",
         "lint-staged": "^9.5.0",
         "mrm": "^2.0.2",
+        "sonarqube-scanner": "^2.6.0",
         "tslint": "^5.10.0",
         "tslint-config-standard-plus": "^2.3.0",
-        "typescript": "~3.7.0"
+        "typescript": "^3.7.5"
     }
 }

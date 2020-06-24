@@ -9,6 +9,16 @@ module.exports = function (config) {
         ],
         karmaTypescriptConfig: {
             tsconfig: "./tsconfig.spec.json",
+            reports: {
+                lcovonly: {
+                    directory: "coverage",
+                    subdirectory:  "./",
+                },
+                html:{
+                    directory: "coverage",
+                    subdirectory: "./",
+                }
+            }
         },
         frameworks: ['jasmine', 'karma-typescript'],
         plugins: [
@@ -17,7 +27,6 @@ module.exports = function (config) {
             require('karma-typescript'),
             require('karma-spec-reporter'),
             require('karma-jasmine-html-reporter'),
-            require('karma-coverage-istanbul-reporter'),
         ],
         client: {
             clearContext: false // leave Jasmine Spec Runner output visible in browser
@@ -25,11 +34,7 @@ module.exports = function (config) {
         preprocessors: {
             'src/**/*.ts': [ 'karma-typescript' ]
         },
-        coverageIstanbulReporter: {
-            dir: require('path').join(__dirname, './coverage/tinyield'),
-            reports: ['html', 'lcovonly', 'text-summary'],
-            fixWebpackSourcePaths: true
-        },
+
         reporters: [ 'spec', 'karma-typescript'],
         // port: 9876,
         colors: true,
