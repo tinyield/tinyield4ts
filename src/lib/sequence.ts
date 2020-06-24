@@ -8,6 +8,7 @@ import {ShortCircuitingError, Traverser} from '../public-api';
 import {AdvancerTake} from './adv/advancer-take';
 import {AdvancerDistinct} from './adv/advancer-distinct';
 import {AdvancerThen} from './adv/advancer-then';
+import {AdvancerIterator} from './adv/advancer-iterator';
 
 export class Sequence<T> extends Advancer<T> {
     protected readonly adv: Advancer<T>;
@@ -17,8 +18,23 @@ export class Sequence<T> extends Advancer<T> {
         this.adv = source;
     }
 
+    /**
+     * Returns a sequential ordered Sequence whose elements
+     * are the specified values in source parameter.
+     */
     public static of<T>(source: T[]): Sequence<T> {
         return new Sequence<T>(new AdvancerIterable(source));
+    }
+
+    /**
+     * Returns an infinite sequential ordered {@code Sequence} produced by iterative
+     * application of a function {@code operation} to an initial element {@code seed},
+     * producing a {@code Sequence} consisting of {@code seed}, {@code operation(seed)},
+     * {@code operation(operation(seed))}, etc.
+     *
+     */
+    public static iterate<T>(seed: T, operation: (elem: T) => T): Sequence<T> {
+        return new Sequence<T>(new AdvancerIterator(seed, operation));
     }
 
     /**
@@ -148,6 +164,21 @@ export class Sequence<T> extends Advancer<T> {
     }
 }
 
+/**
+ * Returns a sequential ordered Sequence whose elements
+ * are the specified values in source parameter.
+ */
 export function of<T>(source: T[]): Sequence<T> {
     return Sequence.of(source);
+}
+
+/**
+ * Returns an infinite sequential ordered {@code Sequence} produced by iterative
+ * application of a function {@code operation} to an initial element {@code seed},
+ * producing a {@code Sequence} consisting of {@code seed}, {@code operation(seed)},
+ * {@code operation(operation(seed))}, etc.
+ *
+ */
+export function iterate<T>(seed: T, operation: (elem: T) => T): Sequence<T> {
+    return Sequence.iterate(seed, operation);
 }

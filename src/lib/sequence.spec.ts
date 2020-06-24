@@ -1,4 +1,4 @@
-import {of, Sequence} from './sequence';
+import {iterate, of, Sequence} from './sequence';
 import {ShortCircuitingError} from './error/short-circuiting-error';
 
 class Beverage {
@@ -448,6 +448,69 @@ describe('Tinyield', () => {
                 it('should throw the error', () => {
                     expect(error).toBeDefined('no error was thrown');
                     expect(error instanceof ShortCircuitingError).toBeFalsy();
+                });
+            });
+        });
+    });
+
+    describe('when "iterate" is called', () => {
+        let sequence: Sequence<Beverage>;
+
+        beforeEach(() => {
+            sequence = iterate(beer, beverage => new Beverage(beverage.name, beverage.cost + 1));
+        });
+
+        it('should return a sequence', () => {
+            expect(sequence).toBeDefined('sequence is undefined');
+        });
+
+        describe('when "take" is called', () => {
+            let taken: Sequence<Beverage>;
+
+            beforeEach(() => {
+                taken = sequence.take(2);
+            });
+
+            it('should return a new sequence', () => {
+                expect(taken).not.toEqual(sequence);
+            });
+
+            describe('when the sequence is iterated', () => {
+                let expectation: Beverage[];
+                let actual: Beverage[];
+
+                beforeEach(() => {
+                    expectation = [beer, new Beverage(beer.name, beer.cost + 1)];
+                    actual = [];
+                    let current: IteratorResult<Beverage, any>;
+                    while (!(current = taken.next()).done) {
+                        actual.push(current.value as Beverage);
+                    }
+                });
+
+                it('should have taken the requested number of elements', () => {
+                    expect(actual.length).toEqual(expectation.length);
+                    for (let i = 0; i < actual.length; i++) {
+                        expect(actual[i]).toEqual(expectation[i]);
+                    }
+                });
+            });
+
+            describe('when the sequence is traversed', () => {
+                let expectation: Beverage[];
+                let actual: Beverage[];
+
+                beforeEach(() => {
+                    expectation = [beer, new Beverage(beer.name, beer.cost + 1)];
+                    actual = [];
+                    taken.forEach(element => actual.push(element));
+                });
+
+                it('should have taken the requested number of elements', () => {
+                    expect(actual.length).toEqual(expectation.length);
+                    for (let i = 0; i < actual.length; i++) {
+                        expect(actual[i]).toEqual(expectation[i]);
+                    }
                 });
             });
         });
