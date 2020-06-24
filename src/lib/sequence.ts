@@ -3,6 +3,7 @@ import {Advancer} from './advancer';
 import {AdvancerIterable} from './adv/advancer-iterable';
 import {AdvancerFilter} from './adv/advancer-filter';
 import {AdvancerMap} from './adv/advancer-map';
+import {AdvancerSkip} from './adv/advancer-skip';
 
 export class Sequence<T> extends Advancer<T> {
     protected readonly adv: Advancer<T>;
@@ -76,6 +77,14 @@ export class Sequence<T> extends Advancer<T> {
      */
     map<R>(mapper: (elem: T) => R): Sequence<R> {
         return new Sequence(new AdvancerMap(this.adv, mapper));
+    }
+
+    /**
+     * Returns a Sequence consisting of the remaining elements of this Sequence
+     * after discarding the first {@code n} elements of the Sequence.
+     */
+    skip(n: number): Sequence<T> {
+        return new Sequence<T>(new AdvancerSkip(this.adv, n));
     }
 }
 

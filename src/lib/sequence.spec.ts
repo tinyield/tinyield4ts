@@ -132,6 +132,57 @@ describe('Tinyield', () => {
             });
         });
 
+        describe('when "skip" is called', () => {
+            let skipped: Sequence<Beverage>;
+
+            beforeEach(() => {
+                skipped = sequence.skip(beverages.length - 1);
+            });
+
+            it('should return a new sequence', () => {
+                expect(skipped).not.toEqual(sequence);
+            });
+
+            describe('when the sequence is iterated', () => {
+                let expectation: Beverage[];
+                let actual: Beverage[];
+
+                beforeEach(() => {
+                    expectation = [beverages[beverages.length - 1]];
+                    actual = [];
+                    let current: IteratorResult<Beverage, any>;
+                    while (!(current = skipped.next()).done) {
+                        actual.push(current.value as Beverage);
+                    }
+                });
+
+                it('should have skipped the requested elements', () => {
+                    expect(actual.length).toEqual(expectation.length);
+                    for (let i = 0; i < actual.length; i++) {
+                        expect(actual[i]).toEqual(expectation[i]);
+                    }
+                });
+            });
+
+            describe('when the sequence is traversed', () => {
+                let expectation: Beverage[];
+                let actual: Beverage[];
+
+                beforeEach(() => {
+                    expectation = [beverages[beverages.length - 1]];
+                    actual = [];
+                    skipped.forEach(element => actual.push(element));
+                });
+
+                it('should have skipped the requested elements', () => {
+                    expect(actual.length).toEqual(expectation.length);
+                    for (let i = 0; i < actual.length; i++) {
+                        expect(actual[i]).toEqual(expectation[i]);
+                    }
+                });
+            });
+        });
+
         describe('when "sorted" is called', () => {
             let actual: Beverage[];
             let expected: Beverage[];
