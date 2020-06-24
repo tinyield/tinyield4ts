@@ -403,7 +403,7 @@ describe('Tinyield', () => {
         describe('when "zip" is called', () => {
             let zipped: Sequence<Beverage[]>;
             beforeEach(() => {
-                zipped = sequence.zip(beerSequence, (elem1, elem2) => [elem1, elem2]);
+                zipped = beerSequence.zip(sequence, (elem1, elem2) => [elem2, elem1]);
             });
 
             it('should return a new sequence', () => {
