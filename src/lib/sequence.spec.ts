@@ -333,6 +333,74 @@ describe('Tinyield', () => {
             });
         });
 
+        describe('when "then" is called', () => {
+            let custom: Sequence<Beverage>;
+            beforeEach(() => {
+                custom = sequence.then(previous => yld => {
+                    let odd = false;
+                    previous.forEach(element => {
+                        if (odd) {
+                            yld(element);
+                        }
+                        odd = !odd;
+                    });
+                });
+            });
+
+            it('should return a new sequence', () => {
+                expect(custom).not.toEqual(sequence);
+            });
+
+            describe('when the sequence is iterated', () => {
+                let expectation: Beverage[];
+                let actual: Beverage[];
+
+                beforeEach(() => {
+                    expectation = [];
+                    beverages.forEach((value, index) => {
+                        if (index % 2 !== 0) {
+                            expectation.push(value);
+                        }
+                    });
+                    actual = [];
+                    let current: IteratorResult<Beverage, any>;
+                    while (!(current = custom.next()).done) {
+                        actual.push(current.value as Beverage);
+                    }
+                });
+
+                it('should report elements', () => {
+                    expect(actual.length).toEqual(expectation.length);
+                    for (let i = 0; i < actual.length; i++) {
+                        expect(actual[i]).toEqual(expectation[i]);
+                    }
+                });
+            });
+
+            describe('when the sequence is traversed', () => {
+                let expectation: Beverage[];
+                let actual: Beverage[];
+
+                beforeEach(() => {
+                    expectation = [];
+                    beverages.forEach((value, index) => {
+                        if (index % 2 !== 0) {
+                            expectation.push(value);
+                        }
+                    });
+                    actual = [];
+                    custom.forEach(element => actual.push(element));
+                });
+
+                it('should report elements', () => {
+                    expect(actual.length).toEqual(expectation.length);
+                    for (let i = 0; i < actual.length; i++) {
+                        expect(actual[i]).toEqual(expectation[i]);
+                    }
+                });
+            });
+        });
+
         describe('when "forEach" is called', () => {
             let actual: Beverage[];
 

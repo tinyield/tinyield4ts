@@ -4,9 +4,10 @@ import {AdvancerIterable} from './adv/advancer-iterable';
 import {AdvancerFilter} from './adv/advancer-filter';
 import {AdvancerMap} from './adv/advancer-map';
 import {AdvancerSkip} from './adv/advancer-skip';
-import {ShortCircuitingError} from '../public-api';
+import {ShortCircuitingError, Traverser} from '../public-api';
 import {AdvancerTake} from './adv/advancer-take';
 import {AdvancerDistinct} from './adv/advancer-distinct';
+import {AdvancerThen} from './adv/advancer-then';
 
 export class Sequence<T> extends Advancer<T> {
     protected readonly adv: Advancer<T>;
@@ -134,6 +135,16 @@ export class Sequence<T> extends Advancer<T> {
      */
     distinctBy(selector: (elem: T) => any): Sequence<T> {
         return new Sequence<T>(new AdvancerDistinct(this.adv, selector));
+    }
+
+    /**
+     * The {@code then} operator lets you encapsulate a piece of an operator
+     * chain into a function.
+     * That function {@code next} is applied to this query to produce a new
+     * {@code Traverser} object that is encapsulated in the resulting Sequence.
+     */
+    then<U>(next: (source: Sequence<T>) => Traverser<U>): Sequence<U> {
+        return new Sequence<U>(new AdvancerThen(this, next));
     }
 }
 
