@@ -21,9 +21,11 @@ describe('Tinyield', () => {
 
     describe('when "of" is called', () => {
         let sequence: Sequence<Beverage>;
+        let beerSequence: Sequence<Beverage>;
 
         beforeEach(() => {
             sequence = of(beverages);
+            beerSequence = of(packOfBeer);
         });
 
         it('should return a sequence', () => {
@@ -230,6 +232,83 @@ describe('Tinyield', () => {
                     expect(actual.length).toEqual(expectation.length);
                     for (let i = 0; i < actual.length; i++) {
                         expect(actual[i]).toEqual(expectation[i]);
+                    }
+                });
+            });
+        });
+
+        describe('when "distinct" is called', () => {
+            let distinct: Sequence<Beverage>;
+            let distinctBeer: Sequence<Beverage>;
+
+            beforeEach(() => {
+                distinct = sequence.distinct();
+                distinctBeer = beerSequence.distinctByKey('name');
+            });
+
+            it('should return a new sequences', () => {
+                expect(distinct).not.toEqual(sequence);
+                expect(distinctBeer).not.toEqual(beerSequence);
+            });
+
+            describe('when the sequences are iterated', () => {
+                let expectation: Beverage[];
+                let beerPackExpectation: Beverage[];
+                let actual: Beverage[];
+                let beerPackActual: Beverage[];
+
+                beforeEach(() => {
+                    expectation = beverages;
+                    beerPackExpectation = [beer];
+                    actual = [];
+                    beerPackActual = [];
+                    let current: IteratorResult<Beverage, any>;
+                    while (!(current = distinct.next()).done) {
+                        actual.push(current.value as Beverage);
+                    }
+                    let currentBeer: IteratorResult<Beverage, any>;
+                    while (!(currentBeer = distinctBeer.next()).done) {
+                        beerPackActual.push(currentBeer.value as Beverage);
+                    }
+                });
+
+                it('should report the distinct elements', () => {
+                    expect(actual.length).toEqual(expectation.length);
+                    for (let i = 0; i < actual.length; i++) {
+                        expect(actual[i]).toEqual(expectation[i]);
+                    }
+
+                    expect(beerPackActual.length).toEqual(beerPackExpectation.length);
+                    for (let i = 0; i < beerPackActual.length; i++) {
+                        expect(beerPackActual[i]).toEqual(beerPackExpectation[i]);
+                    }
+                });
+            });
+
+            describe('when the sequences are traversed', () => {
+                let expectation: Beverage[];
+                let beerPackExpectation: Beverage[];
+                let actual: Beverage[];
+                let beerPackActual: Beverage[];
+
+                beforeEach(() => {
+                    expectation = beverages;
+                    beerPackExpectation = [beer];
+                    actual = [];
+                    beerPackActual = [];
+                    distinct.forEach(element => actual.push(element));
+                    distinctBeer.forEach(element => beerPackActual.push(element));
+                });
+
+                it('should report the distinct elements', () => {
+                    expect(actual.length).toEqual(expectation.length);
+                    for (let i = 0; i < actual.length; i++) {
+                        expect(actual[i]).toEqual(expectation[i]);
+                    }
+
+                    expect(beerPackActual.length).toEqual(beerPackExpectation.length);
+                    for (let i = 0; i < beerPackActual.length; i++) {
+                        expect(beerPackActual[i]).toEqual(beerPackExpectation[i]);
                     }
                 });
             });

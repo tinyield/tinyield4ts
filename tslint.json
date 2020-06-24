@@ -17,7 +17,6 @@
         "no-shadowed-variable": true,
         "no-unused-expression": true,
         "no-unsafe-finally": true,
-        "no-unsafe-any": true,
         "no-var-requires": true,
         "no-var-keyword": true,
         "unified-signatures": true,

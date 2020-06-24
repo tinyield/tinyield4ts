@@ -6,6 +6,7 @@ import {AdvancerMap} from './adv/advancer-map';
 import {AdvancerSkip} from './adv/advancer-skip';
 import {ShortCircuitingError} from '../public-api';
 import {AdvancerTake} from './adv/advancer-take';
+import {AdvancerDistinct} from './adv/advancer-distinct';
 
 export class Sequence<T> extends Advancer<T> {
     protected readonly adv: Advancer<T>;
@@ -110,6 +111,29 @@ export class Sequence<T> extends Advancer<T> {
                 throw error;
             }
         }
+    }
+
+    /**
+     * Returns a query consisting of the distinct elements of this Sequence.
+     */
+    distinct(): Sequence<T> {
+        return this.distinctBy(elem => elem);
+    }
+
+    /**
+     * Returns a query consisting of the distinct elements of this Sequence
+     * by the specified key.
+     */
+    distinctByKey(key: keyof T): Sequence<T> {
+        return this.distinctBy(elem => elem[key]);
+    }
+
+    /**
+     * Returns a query consisting of the distinct elements of this Sequence
+     * by the specified selector.
+     */
+    distinctBy(selector: (elem: T) => any): Sequence<T> {
+        return new Sequence<T>(new AdvancerDistinct(this.adv, selector));
     }
 }
 
