@@ -1,4 +1,4 @@
-import {TinyieldShortCircuitingError} from './tinyield-short-circuiting-error';
+import {TinyieldShortCircuitingError} from './error/tinyield-short-circuiting-error';
 
 export type Yield<T> = (element: T) => void;
 export type Traverser<T> = (yld: Yield<T>) => void;
@@ -7,12 +7,12 @@ export class Tinyield<T> {
     public constructor(protected readonly source: Traverser<T>) {}
 
     public static of<T>(source: T[]): Tinyield<T> {
-        const of = (yld: Yield<T>) => {
+        const ofOperation = (yld: Yield<T>) => {
             for (let i = 0; i < source.length; i++) {
                 yld(source[i]);
             }
         };
-        return new Tinyield<T>(of);
+        return new Tinyield<T>(ofOperation);
     }
 
     shortCircuiting(yld: Yield<T>): void {
@@ -161,7 +161,7 @@ export class Tinyield<T> {
                 const set = new Set<T>();
                 let internalCount = 0;
                 sequence.source(element => {
-                    if (sets.every(set => set.has(element))) {
+                    if (sets.every(current => current.has(element))) {
                         set.add(element);
                         internalCount++;
                     }

@@ -1,4 +1,4 @@
-import {Tinyield, Yield} from './tinyield';
+import {Tinyield, Yield} from '../tinyield';
 
 export class NumberTinyield extends Tinyield<number> {
     public static from(source: Tinyield<number>) {

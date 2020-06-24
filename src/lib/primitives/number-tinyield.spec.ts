@@ -1,4 +1,4 @@
-import {of, Tinyield} from './tinyield';
+import {of, Tinyield} from '../tinyield';
 import {from, NumberTinyield} from './number-tinyield';
 
 describe('NumberTinyield', () => {
