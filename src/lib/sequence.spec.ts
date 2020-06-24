@@ -217,5 +217,40 @@ describe('Tinyield', () => {
                 }
             });
         });
+
+        describe('when "shortCircuit" is called', () => {
+            let actual: Beverage[];
+
+            beforeEach(() => {
+                actual = [];
+                sequence.shortCircuit(element => actual.push(element));
+            });
+
+            it('should traverse the sequence', () => {
+                expect(actual.length).toEqual(beverages.length);
+                for (let i = 0; i < actual.length; i++) {
+                    expect(actual[i]).toEqual(beverages[i]);
+                }
+            });
+
+            describe('when a non ShortCircuitingError error is used to short circuit', () => {
+                let error: Error;
+
+                beforeEach(() => {
+                    try {
+                        of(beverages).shortCircuit(() => {
+                            throw new Error('this is expected');
+                        });
+                    } catch (e) {
+                        error = e;
+                    }
+                });
+
+                it('should throw the error', () => {
+                    expect(error).toBeDefined('no error was thrown');
+                    expect(error instanceof ShortCircuitingError).toBeFalsy();
+                });
+            });
+        });
     });
 });

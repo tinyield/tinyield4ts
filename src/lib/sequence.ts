@@ -86,6 +86,20 @@ export class Sequence<T> extends Advancer<T> {
     skip(n: number): Sequence<T> {
         return new Sequence<T>(new AdvancerSkip(this.adv, n));
     }
+    /**
+     * Yields elements sequentially in the current thread,
+     * until all elements have been processed or the traversal
+     * exited normally through the invocation of bye().
+     */
+    shortCircuit(yld: Yield<T>): void {
+        try {
+            this.adv.traverse(yld);
+        } catch (error) {
+            if (!(error instanceof ShortCircuitingError)) {
+                throw error;
+            }
+        }
+    }
 }
 
 export function of<T>(source: T[]): Sequence<T> {
