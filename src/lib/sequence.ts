@@ -11,6 +11,7 @@ import {AdvancerThen} from './adv/advancer-then';
 import {AdvancerIterator} from './adv/advancer-iterator';
 import {AdvancerZip} from './adv/advancer-zip';
 import {AdvancerFlatmap} from './adv/advancer-flatmap';
+import {AdvancerPeek} from './adv/advancer-peek';
 
 export class Sequence<T> extends Advancer<T> {
     protected readonly adv: Advancer<T>;
@@ -173,8 +174,22 @@ export class Sequence<T> extends Advancer<T> {
         return new Sequence<R>(new AdvancerZip(this.adv, other.adv, zipper));
     }
 
+    /**
+     * Returns a Sequence consisting of the results of replacing each element of
+     * this Sequence with the contents of a mapped query produced by applying
+     * the provided mapping function to each element.
+     */
     flatMap<R>(mapper: (elem: T) => Sequence<R>): Sequence<R> {
         return new Sequence<R>(new AdvancerFlatmap(this, mapper));
+    }
+
+    /**
+     * Returns a Sequence consisting of the elements of this Sequence, additionally
+     * performing the provided action on each element as elements are consumed
+     * from the resulting Sequence.
+     */
+    peek(action: (elem: T) => void): Sequence<T> {
+        return new Sequence<T>(new AdvancerPeek(this.adv, action));
     }
 }
 

@@ -507,6 +507,61 @@ describe('Tinyield', () => {
             });
         });
 
+        describe('when "peek" is called', () => {
+            let peeked: Sequence<Beverage>;
+            let peekedActual: string[];
+
+            beforeEach(() => {
+                peekedActual = [];
+                peeked = sequence.peek(element => peekedActual.push(element.name));
+            });
+
+            it('should return a new sequence', () => {
+                expect(peeked).not.toEqual(sequence as any);
+            });
+
+            describe('when the sequence is iterated', () => {
+                let expectation: Beverage[];
+                let actual: Beverage[];
+
+                beforeEach(() => {
+                    expectation = beverages;
+                    actual = [];
+                    let current: IteratorResult<Beverage, any>;
+                    while (!(current = peeked.next()).done) {
+                        actual.push(current.value as Beverage);
+                    }
+                });
+
+                it('should report the mapped elements', () => {
+                    expect(actual.length).toEqual(expectation.length);
+                    for (let i = 0; i < actual.length; i++) {
+                        expect(actual[i]).toEqual(expectation[i]);
+                        expect(peekedActual[i]).toEqual(expectation[i].name);
+                    }
+                });
+            });
+
+            describe('when the sequence is traversed', () => {
+                let expectation: Beverage[];
+                let actual: Beverage[];
+
+                beforeEach(() => {
+                    expectation = beverages;
+                    actual = [];
+                    peeked.forEach(element => actual.push(element));
+                });
+
+                it('should report the mapped elements', () => {
+                    expect(actual.length).toEqual(expectation.length);
+                    for (let i = 0; i < actual.length; i++) {
+                        expect(actual[i]).toEqual(expectation[i]);
+                        expect(peekedActual[i]).toEqual(expectation[i].name);
+                    }
+                });
+            });
+        });
+
         describe('when "forEach" is called', () => {
             let actual: Beverage[];
 
