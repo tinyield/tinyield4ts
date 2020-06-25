@@ -9,7 +9,7 @@ on:
             - master
 
 jobs:
-    test:
+    CI:
         name: Test on node ${{ matrix.node_version }} and ${{ matrix.os }}
         runs-on: ${{ matrix.os }}
         strategy:
@@ -29,6 +29,21 @@ jobs:
                     npm clean-install
                     npm run check
                     npm run build
+                    npm test
+    SONAR:
+        needs: CI
+        name: Update Sonarqube
+        runs-on: ubuntu-latest
+        steps:
+            -   uses: actions/checkout@v1
+            -   name: Use Node.js 10
+                uses: actions/setup-node@v1
+                with:
+                    node-version: '10'
+
+            -   name: npm install, test and sonar
+                run: |
+                    npm clean-install
                     npm test
                     npm run sonar
                 env:
