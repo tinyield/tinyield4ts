@@ -1,14 +1,14 @@
 import {Advancer} from '../advancer';
 import {bye, Yield} from '../yield';
 import {IteratorReturnResultImpl} from '../utils/iterator-return-result';
-import {Sequence} from '../sequence';
+import {Query} from '../query';
 
 export class AdvancerTake<T> extends Advancer<T> {
-    private readonly upstream: Sequence<T>;
+    private readonly upstream: Query<T>;
     private readonly n: number;
     private index: number;
 
-    constructor(upstream: Sequence<T>, n: number) {
+    constructor(upstream: Query<T>, n: number) {
         super();
         this.upstream = upstream;
         this.n = n;

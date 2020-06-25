@@ -13,7 +13,7 @@ import {AdvancerZip} from './adv/advancer-zip';
 import {AdvancerFlatmap} from './adv/advancer-flatmap';
 import {AdvancerPeek} from './adv/advancer-peek';
 
-export class Sequence<T> extends Advancer<T> {
+export class Query<T> extends Advancer<T> {
     protected readonly adv: Advancer<T>;
 
     public constructor(source: Advancer<T>) {
@@ -25,8 +25,8 @@ export class Sequence<T> extends Advancer<T> {
      * Returns a sequential ordered Sequence whose elements
      * are the specified values in source parameter.
      */
-    public static of<T>(source: T[]): Sequence<T> {
-        return new Sequence<T>(new AdvancerIterable(source));
+    public static of<T>(source: T[]): Query<T> {
+        return new Query<T>(new AdvancerIterable(source));
     }
 
     /**
@@ -36,8 +36,8 @@ export class Sequence<T> extends Advancer<T> {
      * {@code operation(operation(seed))}, etc.
      *
      */
-    public static iterate<T>(seed: T, operation: (elem: T) => T): Sequence<T> {
-        return new Sequence<T>(new AdvancerIterator(seed, operation));
+    public static iterate<T>(seed: T, operation: (elem: T) => T): Query<T> {
+        return new Query<T>(new AdvancerIterator(seed, operation));
     }
 
     /**
@@ -82,40 +82,40 @@ export class Sequence<T> extends Advancer<T> {
      *
      * This is a stateful intermediate operation.
      */
-    sorted(comparator: (a: T, b: T) => number): Sequence<T> {
-        return new Sequence<T>(new AdvancerIterable(this.toArray().sort(comparator)));
+    sorted(comparator: (a: T, b: T) => number): Query<T> {
+        return new Query<T>(new AdvancerIterable(this.toArray().sort(comparator)));
     }
 
     /**
      * Returns a query consisting of the elements of this Sequence that match
      * the given predicate.
      */
-    filter(predicate: (elem: T) => boolean): Sequence<T> {
-        return new Sequence<T>(new AdvancerFilter(this.adv, predicate));
+    filter(predicate: (elem: T) => boolean): Query<T> {
+        return new Query<T>(new AdvancerFilter(this.adv, predicate));
     }
 
     /**
      * Returns a Sequence consisting of the results of applying the given
      * function to the elements of this Sequence.
      */
-    map<R>(mapper: (elem: T) => R): Sequence<R> {
-        return new Sequence(new AdvancerMap(this.adv, mapper));
+    map<R>(mapper: (elem: T) => R): Query<R> {
+        return new Query(new AdvancerMap(this.adv, mapper));
     }
 
     /**
      * Returns a Sequence consisting of the remaining elements of this Sequence
      * after discarding the first {@code n} elements of the Sequence.
      */
-    skip(n: number): Sequence<T> {
-        return new Sequence<T>(new AdvancerSkip(this.adv, n));
+    skip(n: number): Query<T> {
+        return new Query<T>(new AdvancerSkip(this.adv, n));
     }
 
     /**
      * Returns a Sequence consisting of the elements of this Sequence, truncated
      * to be no longer than {@code n} in length.
      */
-    take(n: number): Sequence<T> {
-        return new Sequence<T>(new AdvancerTake(this, n));
+    take(n: number): Query<T> {
+        return new Query<T>(new AdvancerTake(this, n));
     }
 
     /**
@@ -136,7 +136,7 @@ export class Sequence<T> extends Advancer<T> {
     /**
      * Returns a query consisting of the distinct elements of this Sequence.
      */
-    distinct(): Sequence<T> {
+    distinct(): Query<T> {
         return this.distinctBy(elem => elem);
     }
 
@@ -144,7 +144,7 @@ export class Sequence<T> extends Advancer<T> {
      * Returns a query consisting of the distinct elements of this Sequence
      * by the specified key.
      */
-    distinctByKey(key: keyof T): Sequence<T> {
+    distinctByKey(key: keyof T): Query<T> {
         return this.distinctBy(elem => elem[key]);
     }
 
@@ -152,8 +152,8 @@ export class Sequence<T> extends Advancer<T> {
      * Returns a query consisting of the distinct elements of this Sequence
      * by the specified selector.
      */
-    distinctBy(selector: (elem: T) => any): Sequence<T> {
-        return new Sequence<T>(new AdvancerDistinct(this.adv, selector));
+    distinctBy(selector: (elem: T) => any): Query<T> {
+        return new Query<T>(new AdvancerDistinct(this.adv, selector));
     }
 
     /**
@@ -162,16 +162,16 @@ export class Sequence<T> extends Advancer<T> {
      * That function {@code next} is applied to this query to produce a new
      * {@code Traverser} object that is encapsulated in the resulting Sequence.
      */
-    then<U>(next: (source: Sequence<T>) => Traverser<U>): Sequence<U> {
-        return new Sequence<U>(new AdvancerThen(this, next));
+    then<U>(next: (source: Query<T>) => Traverser<U>): Query<U> {
+        return new Query<U>(new AdvancerThen(this, next));
     }
 
     /**
      * Applies a specified function to the corresponding elements of two
      * sequences, producing a sequence of the results.
      */
-    zip<U, R>(other: Sequence<U>, zipper: (elem1: T, elem2: U) => R): Sequence<R> {
-        return new Sequence<R>(new AdvancerZip(this.adv, other.adv, zipper));
+    zip<U, R>(other: Query<U>, zipper: (elem1: T, elem2: U) => R): Query<R> {
+        return new Query<R>(new AdvancerZip(this.adv, other.adv, zipper));
     }
 
     /**
@@ -179,8 +179,8 @@ export class Sequence<T> extends Advancer<T> {
      * this Sequence with the contents of a mapped query produced by applying
      * the provided mapping function to each element.
      */
-    flatMap<R>(mapper: (elem: T) => Sequence<R>): Sequence<R> {
-        return new Sequence<R>(new AdvancerFlatmap(this, mapper));
+    flatMap<R>(mapper: (elem: T) => Query<R>): Query<R> {
+        return new Query<R>(new AdvancerFlatmap(this, mapper));
     }
 
     /**
@@ -188,8 +188,8 @@ export class Sequence<T> extends Advancer<T> {
      * performing the provided action on each element as elements are consumed
      * from the resulting Sequence.
      */
-    peek(action: (elem: T) => void): Sequence<T> {
-        return new Sequence<T>(new AdvancerPeek(this.adv, action));
+    peek(action: (elem: T) => void): Query<T> {
+        return new Query<T>(new AdvancerPeek(this.adv, action));
     }
 }
 
@@ -197,8 +197,8 @@ export class Sequence<T> extends Advancer<T> {
  * Returns a sequential ordered Sequence whose elements
  * are the specified values in source parameter.
  */
-export function of<T>(source: T[]): Sequence<T> {
-    return Sequence.of(source);
+export function of<T>(source: T[]): Query<T> {
+    return Query.of(source);
 }
 
 /**
@@ -208,6 +208,6 @@ export function of<T>(source: T[]): Sequence<T> {
  * {@code operation(operation(seed))}, etc.
  *
  */
-export function iterate<T>(seed: T, operation: (elem: T) => T): Sequence<T> {
-    return Sequence.iterate(seed, operation);
+export function iterate<T>(seed: T, operation: (elem: T) => T): Query<T> {
+    return Query.iterate(seed, operation);
 }

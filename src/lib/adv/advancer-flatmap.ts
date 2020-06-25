@@ -1,17 +1,17 @@
 import {Advancer} from '../advancer';
 import {IteratorReturnResultImpl} from '../utils/iterator-return-result';
 import {Yield} from '../yield';
-import {Sequence} from '../sequence';
+import {Query} from '../query';
 
 export class AdvancerFlatmap<T, R> implements Advancer<R> {
-    private readonly upstream: Sequence<T>;
-    private readonly mapper: (elem: T) => Sequence<R>;
-    private src: Sequence<R>;
+    private readonly upstream: Query<T>;
+    private readonly mapper: (elem: T) => Query<R>;
+    private src: Query<R>;
 
-    constructor(upstream: Sequence<T>, mapper: (elem: T) => Sequence<R>) {
+    constructor(upstream: Query<T>, mapper: (elem: T) => Query<R>) {
         this.upstream = upstream;
         this.mapper = mapper;
-        this.src = new Sequence<R>(Advancer.empty());
+        this.src = new Query<R>(Advancer.empty());
     }
 
     next(): IteratorResult<R, any> {

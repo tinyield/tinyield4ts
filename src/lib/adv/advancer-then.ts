@@ -1,15 +1,15 @@
 import {Advancer} from '../advancer';
 import {Traverser} from '../traverser';
-import {Sequence} from '../sequence';
+import {Query} from '../query';
 import {Yield} from '../yield';
 
 export class AdvancerThen<T, R> implements Advancer<R> {
-    private readonly upstream: Sequence<T>;
-    private readonly then: (source: Sequence<T>) => Traverser<R>;
+    private readonly upstream: Query<T>;
+    private readonly then: (source: Query<T>) => Traverser<R>;
     private iterator: Iterator<R>;
     private inMem = false;
 
-    constructor(upstream: Sequence<T>, next: (source: Sequence<T>) => Traverser<R>) {
+    constructor(upstream: Query<T>, next: (source: Query<T>) => Traverser<R>) {
         this.upstream = upstream;
         this.then = next;
     }
