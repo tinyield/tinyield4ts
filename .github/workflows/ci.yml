@@ -27,7 +27,7 @@ jobs:
             -   name: npm install, build, lint and test
                 run: |
                     npm clean-install
-                    npm run check
+                    npm run check:code-style
                     npm run build
                     npm test
     SONAR:
