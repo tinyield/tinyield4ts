@@ -1,9 +1,9 @@
-import {of, Query} from '../../lib/query';
-import {Beverage, getDinnerBeverages} from '../model/beverage';
+import {of, Query} from '../..';
+import {Beverage, COLA, getDinnerBeverages} from '../model/beverage';
 import {getResultFromIteration, getResultFromTraversal} from '../utils/traversal-utils';
 import {assertSameArray} from '../utils/testing-utils';
 
-describe('AdvancerTake', () => {
+describe('AdvancerTakeWhile', () => {
     let dinnerBeverages: Beverage[];
     let dinnerBeveragesQuery: Query<Beverage>;
 
@@ -12,13 +12,13 @@ describe('AdvancerTake', () => {
         dinnerBeveragesQuery = of(dinnerBeverages);
     });
 
-    describe('when "take" is called', () => {
+    describe('when "takeWhile" is called', () => {
         let taken: Query<Beverage>;
         let expectation: Beverage[];
 
         beforeEach(() => {
-            expectation = [dinnerBeverages[0], dinnerBeverages[1]];
-            taken = dinnerBeveragesQuery.take(2);
+            expectation = [COLA];
+            taken = dinnerBeveragesQuery.takeWhile(elem => elem.cost < 2);
         });
 
         it('should return a new sequence', () => {

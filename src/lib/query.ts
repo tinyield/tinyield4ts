@@ -12,6 +12,7 @@ import {AdvancerIterator} from './adv/advancer-iterator';
 import {AdvancerZip} from './adv/advancer-zip';
 import {AdvancerFlatmap} from './adv/advancer-flatmap';
 import {AdvancerPeek} from './adv/advancer-peek';
+import {AdvancerTakeWhile} from './adv/advancer-take-while';
 
 export class Query<T> extends Advancer<T> {
     protected readonly adv: Advancer<T>;
@@ -116,6 +117,14 @@ export class Query<T> extends Advancer<T> {
      */
     take(n: number): Query<T> {
         return new Query<T>(new AdvancerTake(this, n));
+    }
+
+    /**
+     * Returns a Sequence consisting of the elements of this Sequence, truncated
+     * to be no longer than {@code n} in length.
+     */
+    takeWhile(predicate: (elem: T) => boolean): Query<T> {
+        return new Query<T>(new AdvancerTakeWhile(this, predicate));
     }
 
     /**
