@@ -23,7 +23,7 @@ export class Query<T> extends Advancer<T> {
     }
 
     /**
-     * Returns a sequential ordered Sequence whose elements
+     * Returns a sequential ordered Query whose elements
      * are the specified values in source parameter.
      */
     public static of<T>(source: T[]): Query<T> {
@@ -31,9 +31,9 @@ export class Query<T> extends Advancer<T> {
     }
 
     /**
-     * Returns an infinite sequential ordered {@code Sequence} produced by iterative
+     * Returns an infinite sequential ordered {@code Query} produced by iterative
      * application of a function {@code operation} to an initial element {@code seed},
-     * producing a {@code Sequence} consisting of {@code seed}, {@code operation(seed)},
+     * producing a {@code Query} consisting of {@code seed}, {@code operation(seed)},
      * {@code operation(operation(seed))}, etc.
      *
      */
@@ -43,7 +43,7 @@ export class Query<T> extends Advancer<T> {
 
     /**
      * Returns an {@link IteratorResult} that reports either the
-     * next element in this {@code Sequence} or that there it has
+     * next element in this {@code Query} or that there it has
      * reached the end of the elements
      */
     next(): IteratorResult<T, any> {
@@ -69,7 +69,7 @@ export class Query<T> extends Advancer<T> {
     }
 
     /**
-     * Returns an array containing the elements of this Sequence.
+     * Returns an array containing the elements of this Query.
      */
     toArray(): T[] {
         const result: T[] = [];
@@ -78,7 +78,7 @@ export class Query<T> extends Advancer<T> {
     }
 
     /**
-     * Returns a {@code Sequence} consisting of the elements of this {@code Sequence},
+     * Returns a {@code Query} consisting of the elements of this {@code Query},
      * sorted according to the provided Comparator.
      *
      * This is a stateful intermediate operation.
@@ -88,7 +88,7 @@ export class Query<T> extends Advancer<T> {
     }
 
     /**
-     * Returns a query consisting of the elements of this Sequence that match
+     * Returns a query consisting of the elements of this Query that match
      * the given predicate.
      */
     filter(predicate: (elem: T) => boolean): Query<T> {
@@ -96,23 +96,23 @@ export class Query<T> extends Advancer<T> {
     }
 
     /**
-     * Returns a Sequence consisting of the results of applying the given
-     * function to the elements of this Sequence.
+     * Returns a Query consisting of the results of applying the given
+     * function to the elements of this Query.
      */
     map<R>(mapper: (elem: T) => R): Query<R> {
         return new Query(new AdvancerMap(this.adv, mapper));
     }
 
     /**
-     * Returns a Sequence consisting of the remaining elements of this Sequence
-     * after discarding the first {@code n} elements of the Sequence.
+     * Returns a Query consisting of the remaining elements of this Query
+     * after discarding the first {@code n} elements of the Query.
      */
     skip(n: number): Query<T> {
         return new Query<T>(new AdvancerSkip(this.adv, n));
     }
 
     /**
-     * Returns a Sequence consisting of the elements of this Sequence, truncated
+     * Returns a Query consisting of the elements of this Query, truncated
      * to be no longer than {@code n} in length.
      */
     take(n: number): Query<T> {
@@ -120,11 +120,23 @@ export class Query<T> extends Advancer<T> {
     }
 
     /**
-     * Returns a Sequence consisting of the elements of this Sequence, truncated
+     * Returns a Query consisting of the elements of this Query, truncated
      * to be no longer than {@code n} in length.
      */
     takeWhile(predicate: (elem: T) => boolean): Query<T> {
         return new Query<T>(new AdvancerTakeWhile(this, predicate));
+    }
+
+    /**
+     * Returns the first element of this Query or undefined if the
+     * Query is empty.
+     */
+    first(): T {
+        const first = this.next();
+        if (!first.done) {
+            return first.value;
+        }
+        return undefined;
     }
 
     /**
@@ -143,14 +155,14 @@ export class Query<T> extends Advancer<T> {
     }
 
     /**
-     * Returns a query consisting of the distinct elements of this Sequence.
+     * Returns a query consisting of the distinct elements of this Query.
      */
     distinct(): Query<T> {
         return this.distinctBy(elem => elem);
     }
 
     /**
-     * Returns a query consisting of the distinct elements of this Sequence
+     * Returns a query consisting of the distinct elements of this Query
      * by the specified key.
      */
     distinctByKey(key: keyof T): Query<T> {
@@ -158,7 +170,7 @@ export class Query<T> extends Advancer<T> {
     }
 
     /**
-     * Returns a query consisting of the distinct elements of this Sequence
+     * Returns a query consisting of the distinct elements of this Query
      * by the specified selector.
      */
     distinctBy(selector: (elem: T) => any): Query<T> {
@@ -169,7 +181,7 @@ export class Query<T> extends Advancer<T> {
      * The {@code then} operator lets you encapsulate a piece of an operator
      * chain into a function.
      * That function {@code next} is applied to this query to produce a new
-     * {@code Traverser} object that is encapsulated in the resulting Sequence.
+     * {@code Traverser} object that is encapsulated in the resulting Query.
      */
     then<U>(next: (source: Query<T>) => Traverser<U>): Query<U> {
         return new Query<U>(new AdvancerThen(this, next));
@@ -184,8 +196,8 @@ export class Query<T> extends Advancer<T> {
     }
 
     /**
-     * Returns a Sequence consisting of the results of replacing each element of
-     * this Sequence with the contents of a mapped query produced by applying
+     * Returns a Query consisting of the results of replacing each element of
+     * this Query with the contents of a mapped query produced by applying
      * the provided mapping function to each element.
      */
     flatMap<R>(mapper: (elem: T) => Query<R>): Query<R> {
@@ -193,9 +205,9 @@ export class Query<T> extends Advancer<T> {
     }
 
     /**
-     * Returns a Sequence consisting of the elements of this Sequence, additionally
+     * Returns a Query consisting of the elements of this Query, additionally
      * performing the provided action on each element as elements are consumed
-     * from the resulting Sequence.
+     * from the resulting Query.
      */
     peek(action: (elem: T) => void): Query<T> {
         return new Query<T>(new AdvancerPeek(this.adv, action));
@@ -203,7 +215,7 @@ export class Query<T> extends Advancer<T> {
 }
 
 /**
- * Returns a sequential ordered Sequence whose elements
+ * Returns a sequential ordered Query whose elements
  * are the specified values in source parameter.
  */
 export function of<T>(source: T[]): Query<T> {
@@ -211,9 +223,9 @@ export function of<T>(source: T[]): Query<T> {
 }
 
 /**
- * Returns an infinite sequential ordered {@code Sequence} produced by iterative
+ * Returns an infinite sequential ordered {@code Query} produced by iterative
  * application of a function {@code operation} to an initial element {@code seed},
- * producing a {@code Sequence} consisting of {@code seed}, {@code operation(seed)},
+ * producing a {@code Query} consisting of {@code seed}, {@code operation(seed)},
  * {@code operation(operation(seed))}, etc.
  *
  */

@@ -1,5 +1,5 @@
 import {iterate, of, Query} from '../lib/query';
-import {ShortCircuitingError} from '../lib/error/short-circuiting-error';
+import {ShortCircuitingError} from '..';
 import {BEER, Beverage, getDinnerBeverages, getPackOfBeer} from './model/beverage';
 import {getResultFromIteration, getResultFromTraversal} from './utils/traversal-utils';
 import {assertSameArray} from './utils/testing-utils';
@@ -135,6 +135,33 @@ describe('Query', () => {
                     assertSameArray(actual, expectation);
                 });
             });
+        });
+
+        describe('when "first" is called', () => {
+            let actual: Beverage;
+            let expectation: Beverage;
+
+            beforeEach(() => {
+                actual = sequence.first();
+                expectation = BEER;
+            });
+
+            it('should return the first element of the Query', () => {
+                expect(actual).toBeDefined();
+                expect(actual).toEqual(expectation);
+            });
+        });
+    });
+
+    describe('when "first" is called on an empty Query', () => {
+        let actual: Beverage;
+
+        beforeEach(() => {
+            actual = Query.of([]).first();
+        });
+
+        it('should return undefined', () => {
+            expect(actual).toBeUndefined();
         });
     });
 });
