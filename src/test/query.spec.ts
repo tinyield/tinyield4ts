@@ -76,6 +76,21 @@ describe('Query', () => {
             });
         });
 
+        describe('when "collect" is called', () => {
+            let actual: Beverage[];
+
+            beforeEach(() => {
+                actual = dinnerBeveragesQuery.collect(
+                    () => [],
+                    (container, element) => container.push(element)
+                );
+            });
+
+            it('should traverse the sequence', () => {
+                assertSameArray(actual, dinnerBeverages);
+            });
+        });
+
         describe('when "shortCircuit" is called', () => {
             let actual: Beverage[];
 

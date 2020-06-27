@@ -221,6 +221,17 @@ export class Query<T> extends Advancer<T> {
         this.traverse(elem => data.add(elem));
         return data;
     }
+
+    /**
+     * Performs a mutable reduction operation on the elements of this {@code Query}.
+     * A mutable reduction is one in which the reduced value is a mutable result container, such as an Array,
+     * and elements are incorporated by updating the state of the result rather than by replacing the result.
+     */
+    collect<R>(supplier: () => R, accumulator: (container: R, element: T) => void): R {
+        const result = supplier();
+        this.traverse(elem => accumulator(result, elem));
+        return result;
+    }
 }
 
 /**
