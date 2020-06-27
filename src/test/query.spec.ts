@@ -55,6 +55,27 @@ describe('Query', () => {
             });
         });
 
+        describe('when "toSet" is called', () => {
+            let actual: Set<Beverage>;
+            let expected: Set<Beverage>;
+
+            beforeEach(() => {
+                expected = new Set(dinnerBeverages);
+                actual = dinnerBeveragesQuery.toSet();
+            });
+
+            it('should traverse the sequence', () => {
+                expect(actual.size).toEqual(expected.size);
+                const actualIterator = actual.values();
+                const expectedIterator = expected.values();
+                for (let i = 0; i < actual.size; i++) {
+                    expect(actualIterator.next().value).toEqual(expectedIterator.next().value);
+                }
+                expect(actualIterator.next().done).toBeTruthy();
+                expect(expectedIterator.next().done).toBeTruthy();
+            });
+        });
+
         describe('when "shortCircuit" is called', () => {
             let actual: Beverage[];
 

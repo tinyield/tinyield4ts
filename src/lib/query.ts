@@ -212,6 +212,15 @@ export class Query<T> extends Advancer<T> {
     peek(action: (elem: T) => void): Query<T> {
         return new Query<T>(new AdvancerPeek(this.adv, action));
     }
+
+    /**
+     * Returns a {@link Set} containing the elements of this query.
+     */
+    toSet(): Set<T> {
+        const data = new Set<T>();
+        this.traverse(elem => data.add(elem));
+        return data;
+    }
 }
 
 /**
