@@ -132,11 +132,12 @@ export class Query<T> extends Advancer<T> {
      * Query is empty.
      */
     first(): T {
-        const first = this.next();
-        if (!first.done) {
-            return first.value;
-        }
-        return undefined;
+        let first: T;
+        this.shortCircuit(elem => {
+            first = elem;
+            bye();
+        });
+        return first;
     }
 
     /**
