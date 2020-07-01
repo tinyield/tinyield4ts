@@ -148,6 +148,24 @@ describe('Query', () => {
                 expect(actual).toEqual(COLA);
             });
         });
+
+        describe('when "anyMatch" is called', () => {
+            let positive: boolean;
+            let negative: boolean;
+
+            beforeEach(() => {
+                positive = dinnerBeveragesQuery.anyMatch(beverage => beverage.cost === 2);
+                negative = dinnerBeveragesQuery.anyMatch(beverage => beverage.cost === 4);
+            });
+
+            describe('when a match is made', () => {
+                it('should return true', () => expect(positive).toBeTruthy());
+            });
+
+            describe("when a match isn't made", () => {
+                it('should return false', () => expect(negative).toBeFalsy());
+            });
+        });
     });
 
     describe('when "iterate" is called', () => {

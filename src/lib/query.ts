@@ -235,6 +235,23 @@ export class Query<T> extends Advancer<T> {
     min(comparator: (a: T, b: T) => number): T {
         return this.max((a, b) => comparator(a, b) * -1);
     }
+
+    /**
+     * Returns whether any elements of this query match the provided
+     * predicate.  May not evaluate the predicate on all elements if not
+     * necessary for determining the result.  If the query is empty then
+     * {@code false} is returned and the predicate is not evaluated.
+     */
+    anyMatch(predicate: (elem: T) => boolean): boolean {
+        let found = false;
+        this.shortCircuit(elem => {
+            if (predicate(elem)) {
+                found = true;
+                bye();
+            }
+        });
+        return found;
+    }
     /**
      * Returns a {@link Set} containing the elements of this query.
      */
