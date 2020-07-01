@@ -199,6 +199,29 @@ describe('Query', () => {
                 expect(actual).toEqual(expectation);
             });
         });
+
+        describe('when "reduce" is called', () => {
+            let actual: number;
+            let actualWIdentity: number;
+            let expectation: number;
+
+            beforeEach(() => {
+                actual = of(getDinnerBeverages())
+                    .map(beverage => beverage.cost)
+                    .reduce((acc, curr) => acc + curr);
+                actualWIdentity = of(getDinnerBeverages())
+                    .map(beverage => beverage.cost)
+                    .reduce((acc, curr) => acc + curr, 0);
+                expectation = 6;
+            });
+
+            it("should return the result of the Query's reduction", () => {
+                expect(actual).toBeDefined();
+                expect(actualWIdentity).toBeDefined();
+                expect(actual).toEqual(actualWIdentity);
+                expect(actual).toEqual(expectation);
+            });
+        });
     });
 
     describe('when "iterate" is called', () => {

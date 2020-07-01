@@ -287,6 +287,20 @@ export class Query<T> extends Advancer<T> {
         this.traverse(() => counter++);
         return counter;
     }
+
+    /**
+     * Returns the result of the reduction of the elements of this query,
+     * using the provided identity value and accumulator.
+     */
+    reduce(accumulator: (acc: T, curr: T) => T, identity?: T): T {
+        let result = identity;
+        if (identity === undefined) {
+            result = this.next().value;
+        }
+        this.traverse(elem => (result = accumulator(result, elem)));
+        return result;
+    }
+
     /**
      * Returns a {@link Set} containing the elements of this query.
      */
