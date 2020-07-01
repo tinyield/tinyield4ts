@@ -3,7 +3,7 @@ export class Beverage {
 }
 
 export const BEER = new Beverage('beer', 1);
-export const COFFEE = new Beverage('coffee', 1);
+export const COFFEE = new Beverage('coffee', 2);
 export const COLA = new Beverage('cola', 1);
 export const WINE = new Beverage('wine', 3);
 

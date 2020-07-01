@@ -1,6 +1,6 @@
 import {iterate, of, Query} from '../lib/query';
 import {ShortCircuitingError} from '..';
-import {BEER, Beverage, getDinnerBeverages, getPackOfBeer} from './model/beverage';
+import {BEER, Beverage, COLA, getDinnerBeverages, getPackOfBeer, WINE} from './model/beverage';
 import {getResultFromIteration, getResultFromTraversal} from './utils/traversal-utils';
 import {assertSameArray} from './utils/testing-utils';
 
@@ -120,6 +120,32 @@ describe('Query', () => {
                     expect(error).toBeDefined('no error was thrown');
                     expect(error instanceof ShortCircuitingError).toBeFalsy();
                 });
+            });
+        });
+
+        describe('when "max" is called', () => {
+            let actual: Beverage;
+
+            beforeEach(() => {
+                actual = dinnerBeveragesQuery.max((a, b) => a.cost - b.cost);
+            });
+
+            it('should traverse the sequence', () => {
+                expect(actual).toBeDefined();
+                expect(actual).toEqual(WINE);
+            });
+        });
+
+        describe('when "min" is called', () => {
+            let actual: Beverage;
+
+            beforeEach(() => {
+                actual = dinnerBeveragesQuery.min((a, b) => a.cost - b.cost);
+            });
+
+            it('should traverse the sequence', () => {
+                expect(actual).toBeDefined();
+                expect(actual).toEqual(COLA);
             });
         });
     });

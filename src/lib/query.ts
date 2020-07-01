@@ -215,6 +215,27 @@ export class Query<T> extends Advancer<T> {
     }
 
     /**
+     * Returns the maximum element of this query according to the provided
+     * comparator.  This is a special case of a reduction.
+     */
+    max(comparator: (a: T, b: T) => number): T {
+        let maxValue: T;
+        this.traverse(element => {
+            if (maxValue === undefined || comparator(element, maxValue) > 0) {
+                maxValue = element;
+            }
+        });
+        return maxValue;
+    }
+
+    /**
+     * Returns the minimum element of this query according to the provided
+     * comparator.  This is a special case of a reduction.
+     */
+    min(comparator: (a: T, b: T) => number): T {
+        return this.max((a, b) => comparator(a, b) * -1);
+    }
+    /**
      * Returns a {@link Set} containing the elements of this query.
      */
     toSet(): Set<T> {
