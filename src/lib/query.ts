@@ -14,6 +14,7 @@ import {AdvancerFlatmap} from './adv/advancer-flatmap';
 import {AdvancerPeek} from './adv/advancer-peek';
 import {AdvancerTakeWhile} from './adv/advancer-take-while';
 import {AdvancerGenerate} from './adv/advancer-generate';
+import {AdvancerConcat} from './adv/advancer-concat';
 
 export class Query<T> extends Advancer<T> {
     protected readonly adv: Advancer<T>;
@@ -336,6 +337,15 @@ export class Query<T> extends Advancer<T> {
         const result = supplier();
         this.traverse(elem => accumulator(result, elem));
         return result;
+    }
+
+    /**
+     * Creates a concatenated {@code Query} in which the elements are
+     * all the elements of this {@code Query} followed by all the
+     * elements of the other {@code Query}.
+     */
+    concat(other: Query<T>): Query<T> {
+        return new Query<T>(new AdvancerConcat(this.adv, other.adv));
     }
 }
 
