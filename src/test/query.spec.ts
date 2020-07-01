@@ -1,4 +1,4 @@
-import {iterate, of, Query} from '../lib/query';
+import {generate, iterate, of, Query} from '../lib/query';
 import {ShortCircuitingError} from '..';
 import {BEER, Beverage, COLA, getDinnerBeverages, getPackOfBeer, WINE} from './model/beverage';
 import {getResultFromIteration, getResultFromTraversal} from './utils/traversal-utils';
@@ -242,6 +242,71 @@ describe('Query', () => {
             beforeEach(() => {
                 actual = sequence.first();
                 expectation = BEER;
+            });
+
+            it('should return the first element of the Query', () => {
+                expect(actual).toBeDefined();
+                expect(actual).toEqual(expectation);
+            });
+        });
+    });
+
+    describe('when "generate" is called', () => {
+        let sequence: Query<Beverage>;
+
+        beforeEach(() => {
+            sequence = generate(() => new Beverage(BEER.name, BEER.cost + 1));
+        });
+
+        it('should return a sequence', () => {
+            expect(sequence).toBeDefined('sequence is undefined');
+        });
+
+        describe('when "take" is called', () => {
+            let taken: Query<Beverage>;
+            let expectation: Beverage[];
+
+            beforeEach(() => {
+                taken = sequence.take(2);
+                expectation = [new Beverage(BEER.name, BEER.cost + 1), new Beverage(BEER.name, BEER.cost + 1)];
+            });
+
+            it('should return a new sequence', () => {
+                expect(taken).not.toEqual(sequence);
+            });
+
+            describe('when the sequence is iterated', () => {
+                let actual: Beverage[];
+
+                beforeEach(() => {
+                    actual = getResultFromIteration(taken);
+                });
+
+                it('should have taken the requested number of elements', () => {
+                    assertSameArray(actual, expectation);
+                });
+            });
+
+            describe('when the sequence is traversed', () => {
+                let actual: Beverage[];
+
+                beforeEach(() => {
+                    actual = getResultFromTraversal(taken);
+                });
+
+                it('should have taken the requested number of elements', () => {
+                    assertSameArray(actual, expectation);
+                });
+            });
+        });
+
+        describe('when "first" is called', () => {
+            let actual: Beverage;
+            let expectation: Beverage;
+
+            beforeEach(() => {
+                actual = sequence.first();
+                expectation = new Beverage(BEER.name, BEER.cost + 1);
             });
 
             it('should return the first element of the Query', () => {
