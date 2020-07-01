@@ -154,8 +154,8 @@ describe('Query', () => {
             let negative: boolean;
 
             beforeEach(() => {
-                positive = dinnerBeveragesQuery.anyMatch(beverage => beverage.cost === 2);
-                negative = dinnerBeveragesQuery.anyMatch(beverage => beverage.cost === 4);
+                positive = of(getDinnerBeverages()).anyMatch(beverage => beverage.cost === 2);
+                negative = of(getDinnerBeverages()).anyMatch(beverage => beverage.cost === 4);
             });
 
             describe('when a match is made', () => {
@@ -163,6 +163,24 @@ describe('Query', () => {
             });
 
             describe("when a match isn't made", () => {
+                it('should return false', () => expect(negative).toBeFalsy());
+            });
+        });
+
+        describe('when "allMatch" is called', () => {
+            let positive: boolean;
+            let negative: boolean;
+
+            beforeEach(() => {
+                positive = of(getDinnerBeverages()).allMatch(beverage => beverage.cost < 4);
+                negative = of(getDinnerBeverages()).allMatch(beverage => beverage.cost < 2);
+            });
+
+            describe('when all match', () => {
+                it('should return true', () => expect(positive).toBeTruthy());
+            });
+
+            describe('when not all match', () => {
                 it('should return false', () => expect(negative).toBeFalsy());
             });
         });

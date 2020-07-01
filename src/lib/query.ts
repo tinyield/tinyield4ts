@@ -252,6 +252,23 @@ export class Query<T> extends Advancer<T> {
         });
         return found;
     }
+
+    /**
+     * Returns whether all elements of this query match the provided
+     * predicate. May not evaluate the predicate on all elements if not
+     * necessary for determining the result. If the query is empty then
+     * {@code true} is returned and the predicate is not evaluated.
+     */
+    allMatch(predicate: (elem: T) => boolean): boolean {
+        let succeed = true;
+        this.shortCircuit(elem => {
+            if (!predicate(elem)) {
+                succeed = false;
+                bye();
+            }
+        });
+        return succeed;
+    }
     /**
      * Returns a {@link Set} containing the elements of this query.
      */
