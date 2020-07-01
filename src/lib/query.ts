@@ -15,6 +15,7 @@ import {AdvancerPeek} from './adv/advancer-peek';
 import {AdvancerTakeWhile} from './adv/advancer-take-while';
 import {AdvancerGenerate} from './adv/advancer-generate';
 import {AdvancerConcat} from './adv/advancer-concat';
+import {AdvancerDropWhile} from './adv/advancer-drop-while';
 
 export class Query<T> extends Advancer<T> {
     protected readonly adv: Advancer<T>;
@@ -346,6 +347,14 @@ export class Query<T> extends Advancer<T> {
      */
     concat(other: Query<T>): Query<T> {
         return new Query<T>(new AdvancerConcat(this.adv, other.adv));
+    }
+
+    /**
+     * Returns a {@code Query} consisting of the remaining elements of this query
+     * after discarding the first sequence of elements that match the given Predicate.
+     */
+    dropWhile(predicate: (elem: T) => boolean) {
+        return new Query<T>(new AdvancerDropWhile(this.adv, predicate));
     }
 }
 
