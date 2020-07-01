@@ -316,6 +316,17 @@ export class Query<T> extends Advancer<T> {
     join(): string {
         return this.map(elem => JSON.stringify(elem)).reduce((acc, curr) => acc + curr);
     }
+
+    /**
+     * Returns whether no elements of this query match the provided
+     * predicate. May not evaluate the predicate on all elements if not
+     * necessary for determining the result. If the query is empty then
+     * {@code true} is returned and the predicate is not evaluated.
+     */
+    noneMatch(predicate: (elem: T) => boolean): boolean {
+        return !this.anyMatch(predicate);
+    }
+
     /**
      * Performs a mutable reduction operation on the elements of this {@code Query}.
      * A mutable reduction is one in which the reduced value is a mutable result container, such as an Array,

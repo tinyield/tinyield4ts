@@ -185,6 +185,24 @@ describe('Query', () => {
             });
         });
 
+        describe('when "noneMatch" is called', () => {
+            let positive: boolean;
+            let negative: boolean;
+
+            beforeEach(() => {
+                positive = of(getDinnerBeverages()).noneMatch(beverage => beverage.cost >= 4);
+                negative = of(getDinnerBeverages()).noneMatch(beverage => beverage.cost < 4);
+            });
+
+            describe('when none match', () => {
+                it('should return true', () => expect(positive).toBeTruthy());
+            });
+
+            describe('when any match', () => {
+                it('should return false', () => expect(negative).toBeFalsy());
+            });
+        });
+
         describe('when "count" is called', () => {
             let actual: number;
             let expectation: number;
