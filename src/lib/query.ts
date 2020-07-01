@@ -311,6 +311,12 @@ export class Query<T> extends Advancer<T> {
     }
 
     /**
+     * Returns the concatenation of the input elements into a String, in encounter order.
+     */
+    join(): string {
+        return this.map(elem => JSON.stringify(elem)).reduce((acc, curr) => acc + curr);
+    }
+    /**
      * Performs a mutable reduction operation on the elements of this {@code Query}.
      * A mutable reduction is one in which the reduced value is a mutable result container, such as an Array,
      * and elements are incorporated by updating the state of the result rather than by replacing the result.

@@ -222,6 +222,23 @@ describe('Query', () => {
                 expect(actual).toEqual(expectation);
             });
         });
+
+        describe('when "join" is called', () => {
+            let actual: string;
+            let expectation: string;
+
+            beforeEach(() => {
+                actual = of(getDinnerBeverages()).join();
+                expectation = getDinnerBeverages()
+                    .map(elem => JSON.stringify(elem))
+                    .reduce((p, c) => p + c);
+            });
+
+            it("should return the Query's elements joined", () => {
+                expect(actual).toBeDefined();
+                expect(actual).toEqual(expectation);
+            });
+        });
     });
 
     describe('when "iterate" is called', () => {
