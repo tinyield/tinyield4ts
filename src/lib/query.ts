@@ -278,6 +278,15 @@ export class Query<T> extends Advancer<T> {
         });
         return succeed;
     }
+
+    /**
+     * Returns the count of elements in this query.
+     */
+    count(): number {
+        let counter = 0;
+        this.traverse(() => counter++);
+        return counter;
+    }
     /**
      * Returns a {@link Set} containing the elements of this query.
      */

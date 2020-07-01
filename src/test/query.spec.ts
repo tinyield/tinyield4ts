@@ -184,6 +184,21 @@ describe('Query', () => {
                 it('should return false', () => expect(negative).toBeFalsy());
             });
         });
+
+        describe('when "count" is called', () => {
+            let actual: number;
+            let expectation: number;
+
+            beforeEach(() => {
+                actual = dinnerBeveragesQuery.count();
+                expectation = 3;
+            });
+
+            it('should return the element count for the Query', () => {
+                expect(actual).toBeDefined();
+                expect(actual).toEqual(expectation);
+            });
+        });
     });
 
     describe('when "iterate" is called', () => {
