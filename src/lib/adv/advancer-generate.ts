@@ -10,7 +10,7 @@ export class AdvancerGenerate<T> extends Advancer<T> {
         this.supplier = supplier;
     }
 
-    next(): IteratorResult<T, any> {
+    next(): IteratorResult<T> {
         return new IteratorYieldImpl(this.supplier());
     }
 

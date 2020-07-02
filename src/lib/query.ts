@@ -58,7 +58,7 @@ export class Query<T> extends Advancer<T> {
      * next element in this {@code Query} or that there it has
      * reached the end of the elements
      */
-    next(): IteratorResult<T, any> {
+    next(): IteratorResult<T> {
         return this.adv.next();
     }
 
@@ -287,7 +287,9 @@ export class Query<T> extends Advancer<T> {
      */
     count(): number {
         let counter = 0;
-        this.traverse(() => counter++);
+        this.traverse(() => {
+            counter++;
+        });
         return counter;
     }
 

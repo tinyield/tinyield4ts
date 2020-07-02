@@ -14,9 +14,9 @@ export class AdvancerFlatmap<T, R> implements Advancer<R> {
         this.src = new Query<R>(Advancer.empty());
     }
 
-    next(): IteratorResult<R, any> {
-        let curr: IteratorResult<R, any>;
-        while ((curr = this.src.next()).done) {
+    next(): IteratorResult<R> {
+        let curr: IteratorResult<R>;
+        for (curr = this.src.next(); curr.done; curr = this.src.next()) {
             const aux = this.upstream.next();
             if (aux.done) {
                 return new IteratorReturnResultImpl(undefined);

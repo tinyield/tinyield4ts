@@ -10,7 +10,7 @@ export class AdvancerPeek<T> implements Advancer<T> {
         this.action = action;
     }
 
-    next(): IteratorResult<T, any> {
+    next(): IteratorResult<T> {
         const curr = this.upstream.next();
         if (!curr.done) {
             this.action(curr.value as T);

@@ -12,7 +12,7 @@ export class AdvancerConcat<T> implements Advancer<T> {
         this.second = second;
     }
 
-    next(): IteratorResult<T, any> {
+    next(): IteratorResult<T> {
         const current = this.getNextFrom(this.first);
         if (!current.done) {
             return current;
@@ -26,7 +26,7 @@ export class AdvancerConcat<T> implements Advancer<T> {
         this.second.traverse(element => yld(element));
     }
 
-    private getNextFrom(adv: Advancer<T>): IteratorResult<T, any> {
+    private getNextFrom(adv: Advancer<T>): IteratorResult<T> {
         const iteration = adv.next();
         if (!iteration.done) {
             return new IteratorYieldImpl(iteration.value);

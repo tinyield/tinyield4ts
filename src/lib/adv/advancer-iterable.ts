@@ -9,13 +9,12 @@ export class AdvancerIterable<T> extends Advancer<T> {
         this.source = source[Symbol.iterator]();
     }
 
-    next(): IteratorResult<T, any> {
+    next(): IteratorResult<T> {
         return this.source.next();
     }
 
     traverse(yld: Yield<T>): void {
-        let current: IteratorResult<T>;
-        while (!(current = this.next()).done) {
+        for (let current = this.source.next(); !current.done; current = this.source.next()) {
             yld(current.value as T);
         }
     }

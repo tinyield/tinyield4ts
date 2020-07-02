@@ -15,7 +15,7 @@ export class AdvancerTake<T> extends Advancer<T> {
         this.index = 0;
     }
 
-    next(): IteratorResult<T, any> {
+    next(): IteratorResult<T> {
         if (this.index >= this.n) {
             return new IteratorReturnResultImpl(undefined);
         }

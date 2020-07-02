@@ -14,9 +14,8 @@ export class AdvancerDistinct<T> implements Advancer<T> {
         this.set = new Set<T>();
     }
 
-    next(): IteratorResult<T, any> {
-        let curr: IteratorResult<T, any>;
-        while (!(curr = this.upstream.next()).done) {
+    next(): IteratorResult<T> {
+        for (let curr = this.upstream.next(); !curr.done; curr = this.upstream.next()) {
             if (!this.set.has(this.by(curr.value as T))) {
                 this.set.add(this.by(curr.value as T));
                 return new IteratorYieldImpl(curr.value as T);

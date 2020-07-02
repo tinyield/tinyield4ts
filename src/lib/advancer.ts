@@ -6,7 +6,7 @@ export abstract class Advancer<T> implements Iterator<T>, Traverseable<T> {
     static empty<R>(): Advancer<R> {
         // tslint:disable-next-line
         return new (class extends Advancer<R> {
-            next(): IteratorResult<R, any> {
+            next(): IteratorResult<R> {
                 return new IteratorReturnResultImpl(undefined);
             }
 
@@ -17,5 +17,5 @@ export abstract class Advancer<T> implements Iterator<T>, Traverseable<T> {
     }
 
     abstract traverse(yld: Yield<T>): void;
-    abstract next(): IteratorResult<T, any>;
+    abstract next(): IteratorResult<T>;
 }

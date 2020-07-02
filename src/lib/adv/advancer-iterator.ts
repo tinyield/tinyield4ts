@@ -12,15 +12,17 @@ export class AdvancerIterator<T> extends Advancer<T> {
         this.previous = seed;
     }
 
-    next(): IteratorResult<T, any> {
+    next(): IteratorResult<T> {
         const current = this.previous;
         this.previous = this.operation(current);
         return new IteratorYieldImpl(current);
     }
 
     traverse(yld: Yield<T>): void {
-        for (let current = this.previous; true; current = this.operation(current)) {
+        let current = this.previous;
+        while (true) {
             yld(current);
+            current = this.operation(current);
         }
     }
 }

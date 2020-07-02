@@ -13,9 +13,8 @@ export class AdvancerFilter<T> extends Advancer<T> {
         this.predicate = predicate;
     }
 
-    next(): IteratorResult<T, any> {
-        let curr: IteratorResult<T, any>;
-        while (!(curr = this.upstream.next()).done) {
+    next(): IteratorResult<T> {
+        for (let curr = this.upstream.next(); !curr.done; curr = this.upstream.next()) {
             if (this.predicate(curr.value as T)) {
                 return new IteratorYieldImpl(curr.value as T);
             }

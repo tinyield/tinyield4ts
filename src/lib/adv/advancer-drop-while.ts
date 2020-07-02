@@ -14,16 +14,17 @@ export class AdvancerDropWhile<T> extends Advancer<T> {
         this.dropped = false;
     }
 
-    next(): IteratorResult<T, any> {
-        let curr;
-        while (!this.dropped && !(curr = this.upstream.next()).done) {
+    next(): IteratorResult<T> {
+        if (this.dropped) {
+            return this.upstream.next();
+        }
+        let curr = this.upstream.next();
+        while (!this.dropped && !curr.done) {
             if (!this.predicate(curr.value)) {
                 this.dropped = true;
                 return curr;
             }
-        }
-        if (this.dropped) {
-            return this.upstream.next();
+            curr = this.upstream.next();
         }
         return new IteratorReturnResultImpl(undefined);
     }

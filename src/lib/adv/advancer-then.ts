@@ -25,7 +25,7 @@ export class AdvancerThen<T, R> implements Advancer<R> {
         return this.iterator;
     }
 
-    next(): IteratorResult<R, any> {
+    next(): IteratorResult<R> {
         return this.getIterator().next();
     }
 

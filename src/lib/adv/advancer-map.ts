@@ -12,8 +12,8 @@ export class AdvancerMap<T, R> implements Advancer<R> {
         this.mapper = mapper;
     }
 
-    next(): IteratorResult<R, any> {
-        const curr: IteratorResult<T, any> = this.upstream.next();
+    next(): IteratorResult<R> {
+        const curr: IteratorResult<T> = this.upstream.next();
         if (curr.done) {
             return new IteratorReturnResultImpl(undefined);
         }

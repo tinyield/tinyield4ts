@@ -13,7 +13,7 @@ export class AdvancerSkip<T> extends Advancer<T> {
         this.index = 0;
     }
 
-    next(): IteratorResult<T, any> {
+    next(): IteratorResult<T> {
         while (this.index < this.n && !this.upstream.next().done) {
             this.index++;
         }
@@ -22,9 +22,10 @@ export class AdvancerSkip<T> extends Advancer<T> {
 
     traverse(yld: Yield<T>): void {
         this.upstream.traverse(element => {
-            if (this.index++ >= this.n) {
+            if (this.index >= this.n) {
                 yld(element);
             }
+            this.index++;
         });
     }
 }

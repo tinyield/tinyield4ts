@@ -15,7 +15,7 @@ export class AdvancerTakeWhile<T> extends Advancer<T> {
         this.finished = false;
     }
 
-    next(): IteratorResult<T, any> {
+    next(): IteratorResult<T> {
         const curr = this.upstream.next();
         if (this.finished || curr.done || !this.predicate(curr.value)) {
             this.finished = true;

@@ -14,9 +14,9 @@ export class AdvancerZip<T, U, R> implements Advancer<R> {
         this.zipper = zipper;
     }
 
-    next(): IteratorResult<R, any> {
-        const upstreamCurrent: IteratorResult<T, any> = this.upstream.next();
-        const otherCurrent: IteratorResult<U, any> = this.other.next();
+    next(): IteratorResult<R> {
+        const upstreamCurrent: IteratorResult<T> = this.upstream.next();
+        const otherCurrent: IteratorResult<U> = this.other.next();
         if (upstreamCurrent.done || otherCurrent.done) {
             return new IteratorReturnResultImpl(undefined);
         }

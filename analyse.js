@@ -12,7 +12,7 @@ scanner(
             "sonar.sources": "src",
             "sonar.inclusions": "**/*.ts",
             "sonar.ts.tslintconfigpath": "tslint.json",
-            "sonar.typescript.lcov.reportPaths": "coverage/lcov.info",
+            "sonar.javascript.lcov.reportPaths": "coverage/lcov.info",
             "sonar.language": "ts",
             "sonar.branch.name": "master",
             "sonar.sourceEncoding": "UTF-8",
