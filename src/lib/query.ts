@@ -16,6 +16,7 @@ import {AdvancerTakeWhile} from './adv/advancer-take-while';
 import {AdvancerGenerate} from './adv/advancer-generate';
 import {AdvancerConcat} from './adv/advancer-concat';
 import {AdvancerDropWhile} from './adv/advancer-drop-while';
+import {NumberQuery} from './primitive/number-query';
 
 export class Query<T> extends Advancer<T> {
     protected readonly adv: Advancer<T>;
@@ -75,7 +76,7 @@ export class Query<T> extends Advancer<T> {
      * until all elements have been processed or an
      * exception is thrown.
      */
-    traverse(yld: Yield<T>) {
+    traverse(yld: Yield<T>): void {
         this.adv.traverse(yld);
     }
 
@@ -353,8 +354,12 @@ export class Query<T> extends Advancer<T> {
      * Returns a {@code Query} consisting of the remaining elements of this query
      * after discarding the first sequence of elements that match the given Predicate.
      */
-    dropWhile(predicate: (elem: T) => boolean) {
+    dropWhile(predicate: (elem: T) => boolean): Query<T> {
         return new Query<T>(new AdvancerDropWhile(this.adv, predicate));
+    }
+
+    mapToNumber(mapper: (elem: T) => number): NumberQuery {
+        return new NumberQuery(this.map(mapper));
     }
 }
 

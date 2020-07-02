@@ -46,6 +46,7 @@
         "encoding": true,
         "import-spacing": true,
         "no-trailing-whitespace": true,
+        "prefer-method-signature": true,
         "semicolon": [
             true,
             "always"

@@ -33,7 +33,7 @@ describe('Query', () => {
             let expected: Beverage[];
 
             beforeEach(() => {
-                expected = dinnerBeverages.sort(comparator);
+                expected = [...dinnerBeverages].sort(comparator);
                 actual = getResultFromTraversal(dinnerBeveragesQuery.sorted(comparator));
             });
 
@@ -112,7 +112,7 @@ describe('Query', () => {
                             throw new Error('this is expected');
                         });
                     } catch (e) {
-                        error = e as any;
+                        error = e;
                     }
                 });
 
