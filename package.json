@@ -1,7 +1,7 @@
 {
     "name": "tinyield4ts",
     "version": "0.1.0",
-    "description": "Tinyield is a solution for sequence definition",
+    "description": "A Minimalistic, extensible and lazy sequence implementation for Typescript and Javascript",
     "repository": {
         "url": "https://github.com/tinyield/tinyield4ts.git",
         "type": "git"
@@ -12,15 +12,14 @@
         "build:snapshot": "npm pack ./dist",
         "fix:code-style": "gts fix",
         "test": "karma start",
-
         "check:code-style": "gts check",
         "sonar": "node analyse.js",
         "build": "tsc -p tsconfig.lib.json && copyfiles package.json dist",
-
+        "publish": "npm publish ./dist",
         "clean": "gts clean",
         "pretest": "npm run clean",
         "prebuild": "npm run clean",
-        "presnapshot": "npm run build"
+        "prebuild:snapshot": "npm run build"
     },
     "contributors": [
         {
