@@ -1,5 +1,5 @@
 import {generate, iterate, of, Query} from '../lib/query';
-import {ShortCircuitingError} from '..';
+import {SHORT_CIRCUITING_ERROR} from '..';
 import {BEER, Beverage, COLA, getDinnerBeverages, getPackOfBeer, WINE} from './model/beverage';
 import {getResultFromIteration, getResultFromTraversal} from './utils/traversal-utils';
 import {assertSameArray} from './utils/testing-utils';
@@ -104,7 +104,7 @@ describe('Query', () => {
             });
 
             describe('when a non ShortCircuitingError error is used to short circuit', () => {
-                let error: Error;
+                let error: any;
 
                 beforeEach(() => {
                     try {
@@ -118,7 +118,7 @@ describe('Query', () => {
 
                 it('should throw the error', () => {
                     expect(error).toBeDefined('no error was thrown');
-                    expect(error instanceof ShortCircuitingError).toBeFalsy();
+                    expect(error).not.toEqual(SHORT_CIRCUITING_ERROR);
                 });
             });
         });

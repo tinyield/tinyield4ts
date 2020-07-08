@@ -25,11 +25,19 @@ export class AdvancerTakeWhile<T> extends Advancer<T> {
     }
 
     traverse(yld: Yield<T>): void {
-        this.upstream.shortCircuit(element => {
-            if (!this.predicate(element)) {
-                bye();
+        if (this.upstream.characteristics.hasAdvancer) {
+            let next = this.next();
+            while (!next.done) {
+                yld(next.value);
+                next = this.next();
             }
-            yld(element);
-        });
+        } else {
+            this.upstream.shortCircuit(element => {
+                if (!this.predicate(element)) {
+                    bye();
+                }
+                yld(element);
+            });
+        }
     }
 }

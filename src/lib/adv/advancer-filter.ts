@@ -2,12 +2,13 @@ import {Advancer} from '../advancer';
 import {Yield} from '../yield';
 import {IteratorYieldImpl} from '../utils/iterator-yield';
 import {IteratorReturnResultImpl} from '../utils/iterator-return-result';
+import {Query} from '../query';
 
 export class AdvancerFilter<T> extends Advancer<T> {
-    private readonly upstream: Advancer<T>;
+    private readonly upstream: Query<T>;
     private readonly predicate: (elem: T) => boolean;
 
-    constructor(upstream: Advancer<T>, predicate: (elem: T) => boolean) {
+    constructor(upstream: Query<T>, predicate: (elem: T) => boolean) {
         super();
         this.upstream = upstream;
         this.predicate = predicate;

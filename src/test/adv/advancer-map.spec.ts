@@ -1,5 +1,5 @@
 import {of, Query} from '../../lib/query';
-import {Beverage, getDinnerBeverages} from '../model/beverage';
+import {Beverage, COFFEE, getDinnerBeverages} from '../model/beverage';
 import {getResultFromIteration, getResultFromTraversal} from '../utils/traversal-utils';
 import {assertSameArray} from '../utils/testing-utils';
 
@@ -46,6 +46,44 @@ describe('AdvancerMap', () => {
 
             it('should report the mapped elements', () => {
                 assertSameArray(actual, expectation);
+            });
+        });
+
+        describe('when "filter" is called', () => {
+            let filtered: Query<string>;
+            let filterExpectation: string[];
+
+            beforeEach(() => {
+                filterExpectation = [COFFEE.name.toUpperCase()];
+                filtered = mapped.filter(element => element.length > 4).map(element => element.toUpperCase());
+            });
+
+            it('should return a new sequence', () => {
+                expect(filtered).not.toEqual(mapped);
+            });
+
+            describe('when the sequence is iterated', () => {
+                let actual: string[];
+
+                beforeEach(() => {
+                    actual = getResultFromIteration(filtered);
+                });
+
+                it('should report the mapped elements', () => {
+                    assertSameArray(actual, filterExpectation);
+                });
+            });
+
+            describe('when the sequence is traversed', () => {
+                let actual: string[];
+
+                beforeEach(() => {
+                    actual = getResultFromTraversal(filtered);
+                });
+
+                it('should report the mapped elements', () => {
+                    assertSameArray(actual, filterExpectation);
+                });
             });
         });
     });

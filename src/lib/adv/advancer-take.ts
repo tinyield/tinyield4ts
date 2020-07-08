@@ -24,12 +24,23 @@ export class AdvancerTake<T> extends Advancer<T> {
     }
 
     traverse(yld: Yield<T>): void {
-        this.upstream.shortCircuit(element => {
-            if (this.index >= this.n) {
-                bye();
+        if (this.upstream.characteristics.hasAdvancer) {
+            let next: IteratorResult<T>;
+            while (this.index < this.n && (next === undefined || !next.done)) {
+                this.index++;
+                next = this.upstream.next();
+                if (!next.done) {
+                    yld(next.value);
+                }
             }
-            this.index++;
-            yld(element);
-        });
+        } else {
+            this.upstream.shortCircuit(element => {
+                if (this.index >= this.n) {
+                    bye();
+                }
+                this.index++;
+                yld(element);
+            });
+        }
     }
 }
