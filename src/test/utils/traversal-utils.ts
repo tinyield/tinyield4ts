@@ -1,4 +1,4 @@
-import {Query} from '../..';
+import {Query} from '../../lib/query';
 
 export function getResultFromIteration<T>(query: Query<T>): T[] {
     const result: T[] = [];

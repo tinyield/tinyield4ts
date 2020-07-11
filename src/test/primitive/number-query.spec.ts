@@ -1,6 +1,6 @@
 import {BEER, COLA, getDinnerBeverages, WINE} from '../model/beverage';
 import {NumberQuery} from '../../lib/primitive/number-query';
-import {Query} from '../..';
+import {Query} from '../../lib/query';
 import {getResultFromIteration, getResultFromTraversal} from '../utils/traversal-utils';
 import {assertSameArray} from '../utils/testing-utils';
 

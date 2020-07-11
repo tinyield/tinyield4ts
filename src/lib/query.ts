@@ -172,7 +172,7 @@ export class Query<T> extends Advancer<T> {
         try {
             this.adv.traverse(yld);
         } catch (error) {
-            if (!(error === SHORT_CIRCUITING_ERROR)) {
+            if (SHORT_CIRCUITING_ERROR !== error) {
                 throw error;
             }
         }

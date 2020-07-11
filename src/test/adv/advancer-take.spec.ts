@@ -18,7 +18,7 @@ describe('AdvancerTake', () => {
 
         beforeEach(() => {
             expectation = [dinnerBeverages[0], dinnerBeverages[1]];
-            taken = dinnerBeveragesQuery.take(2);
+            taken = dinnerBeveragesQuery.take(2).take(3);
         });
 
         it('should return a new sequence', () => {

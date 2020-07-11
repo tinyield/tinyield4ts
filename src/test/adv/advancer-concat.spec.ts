@@ -1,4 +1,4 @@
-import {of, Query} from '../..';
+import {of, Query} from '../../lib/query';
 import {Beverage, getDinnerBeverages, getPackOfBeer} from '../model/beverage';
 import {getResultFromIteration, getResultFromTraversal} from '../utils/traversal-utils';
 import {assertSameArray} from '../utils/testing-utils';
