@@ -4,7 +4,7 @@ import {Query} from '../query';
 import {bye, Yield} from '../yield';
 import {SHORT_CIRCUITING_ERROR} from '../../lib/error/short-circuiting-error';
 
-export class AdvancerThen<T, R> implements Advancer<R> {
+export class AdvancerThen<T, R> extends Advancer<R> {
     private readonly upstream: Query<T>;
     private readonly then: (source: Query<T>) => Traverser<R>;
     private readonly pageSize = 10;
@@ -13,6 +13,7 @@ export class AdvancerThen<T, R> implements Advancer<R> {
     private index = -1;
 
     constructor(upstream: Query<T>, next: (source: Query<T>) => Traverser<R>) {
+        super();
         this.upstream = upstream;
         this.then = next;
     }

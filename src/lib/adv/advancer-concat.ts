@@ -3,11 +3,12 @@ import {IteratorYieldImpl} from '../utils/iterator-yield';
 import {IteratorReturnResultImpl} from '../utils/iterator-return-result';
 import {Yield} from '../yield';
 
-export class AdvancerConcat<T> implements Advancer<T> {
+export class AdvancerConcat<T> extends Advancer<T> {
     private readonly first: Advancer<T>;
     private readonly second: Advancer<T>;
 
     constructor(first: Advancer<T>, second: Advancer<T>) {
+        super();
         this.first = first;
         this.second = second;
     }

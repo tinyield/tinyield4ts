@@ -3,11 +3,12 @@ import {IteratorYieldImpl} from '../utils/iterator-yield';
 import {IteratorReturnResultImpl} from '../utils/iterator-return-result';
 import {Yield} from '../yield';
 
-export class AdvancerMap<T, R> implements Advancer<R> {
+export class AdvancerMap<T, R> extends Advancer<R> {
     private readonly upstream: Advancer<T>;
     private readonly mapper: (elem: T) => R;
 
     constructor(upstream: Advancer<T>, mapper: (elem: T) => R) {
+        super();
         this.upstream = upstream;
         this.mapper = mapper;
     }
