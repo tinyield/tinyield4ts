@@ -6,7 +6,7 @@ export class AdvancerPeek<T> extends Advancer<T> {
     private readonly action: (elem: T) => void;
 
     constructor(upstream: Advancer<T>, action: (elem: T) => void) {
-        super();
+        super(upstream.characteristics);
         this.upstream = upstream;
         this.action = action;
     }

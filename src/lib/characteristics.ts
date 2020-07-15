@@ -1,9 +1,13 @@
 export class Characteristics {
-    public readonly hasAdvancer: boolean;
+    public readonly isAdvanceable: boolean;
 
-    constructor(hasAdvancer = true) {
-        this.hasAdvancer = hasAdvancer;
+    constructor(isAdvanceable = true) {
+        this.isAdvanceable = isAdvanceable;
     }
+}
+
+export function getMergedCharacteristics(left: Characteristics, right: Characteristics) {
+    return new Characteristics(left.isAdvanceable && right.isAdvanceable);
 }
 
 export const DEFAULT_CHARACTERISTICS = new Characteristics();

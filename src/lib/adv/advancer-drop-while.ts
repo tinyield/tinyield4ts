@@ -8,7 +8,7 @@ export class AdvancerDropWhile<T> extends Advancer<T> {
     private dropped: boolean;
 
     constructor(upstream: Advancer<T>, predicate: (elem: T) => boolean) {
-        super();
+        super(upstream.characteristics);
         this.upstream = upstream;
         this.predicate = predicate;
         this.dropped = false;

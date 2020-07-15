@@ -2,18 +2,17 @@ import {Advancer} from '../advancer';
 import {IteratorReturnResultImpl} from '../utils/iterator-return-result';
 import {Yield} from '../yield';
 import {Query} from '../query';
-import {DEFAULT_CHARACTERISTICS} from '../characteristics';
 
 export class AdvancerFlatmap<T, R> extends Advancer<R> {
-    private readonly upstream: Query<T>;
+    private readonly upstream: Advancer<T>;
     private readonly mapper: (elem: T) => Query<R>;
     private src: Query<R>;
 
-    constructor(upstream: Query<T>, mapper: (elem: T) => Query<R>) {
-        super();
+    constructor(upstream: Advancer<T>, mapper: (elem: T) => Query<R>) {
+        super(upstream.characteristics);
         this.upstream = upstream;
         this.mapper = mapper;
-        this.src = new Query<R>(Advancer.empty(), DEFAULT_CHARACTERISTICS);
+        this.src = new Query<R>(Advancer.empty());
     }
 
     next(): IteratorResult<R> {

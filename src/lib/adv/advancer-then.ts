@@ -3,6 +3,7 @@ import {Traverser} from '../traverser';
 import {Query} from '../query';
 import {bye, Yield} from '../yield';
 import {SHORT_CIRCUITING_ERROR} from '../../lib/error/short-circuiting-error';
+import {Characteristics} from '../characteristics';
 
 export class AdvancerThen<T, R> extends Advancer<R> {
     private readonly upstream: Query<T>;
@@ -13,7 +14,7 @@ export class AdvancerThen<T, R> extends Advancer<R> {
     private index = -1;
 
     constructor(upstream: Query<T>, next: (source: Query<T>) => Traverser<R>) {
-        super();
+        super(new Characteristics(false));
         this.upstream = upstream;
         this.then = next;
     }

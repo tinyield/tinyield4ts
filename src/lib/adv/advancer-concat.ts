@@ -2,13 +2,14 @@ import {Advancer} from '../advancer';
 import {IteratorYieldImpl} from '../utils/iterator-yield';
 import {IteratorReturnResultImpl} from '../utils/iterator-return-result';
 import {Yield} from '../yield';
+import {getMergedCharacteristics} from '../characteristics';
 
 export class AdvancerConcat<T> extends Advancer<T> {
     private readonly first: Advancer<T>;
     private readonly second: Advancer<T>;
 
     constructor(first: Advancer<T>, second: Advancer<T>) {
-        super();
+        super(getMergedCharacteristics(first.characteristics, second.characteristics));
         this.first = first;
         this.second = second;
     }

@@ -9,7 +9,7 @@ export class AdvancerTakeWhile<T> extends Advancer<T> {
     private finished: boolean;
 
     constructor(upstream: Query<T>, predicate: (elem: T) => boolean) {
-        super();
+        super(upstream.characteristics);
         this.upstream = upstream;
         this.predicate = predicate;
         this.finished = false;
@@ -25,7 +25,7 @@ export class AdvancerTakeWhile<T> extends Advancer<T> {
     }
 
     traverse(yld: Yield<T>): void {
-        if (this.upstream.characteristics.hasAdvancer) {
+        if (this.upstream.characteristics.isAdvanceable) {
             let next = this.next();
             while (!next.done) {
                 yld(next.value);

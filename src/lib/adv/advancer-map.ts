@@ -8,7 +8,7 @@ export class AdvancerMap<T, R> extends Advancer<R> {
     private readonly mapper: (elem: T) => R;
 
     constructor(upstream: Advancer<T>, mapper: (elem: T) => R) {
-        super();
+        super(upstream.characteristics);
         this.upstream = upstream;
         this.mapper = mapper;
     }

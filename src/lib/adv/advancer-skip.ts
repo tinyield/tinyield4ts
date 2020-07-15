@@ -7,7 +7,7 @@ export class AdvancerSkip<T> extends Advancer<T> {
     private index: number;
 
     constructor(upstream: Advancer<T>, n: number) {
-        super();
+        super(upstream.characteristics);
         this.upstream = upstream;
         this.n = n;
         this.index = 0;

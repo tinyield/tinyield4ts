@@ -1,8 +1,13 @@
 import {Traverseable} from './traverser';
 import {IteratorReturnResultImpl} from './utils/iterator-return-result';
 import {Yield} from './yield';
+import {Characteristics, DEFAULT_CHARACTERISTICS} from './characteristics';
 
 export abstract class Advancer<T> implements Iterator<T>, Traverseable<T> {
+    public readonly characteristics: Characteristics;
+    constructor(characteristics: Characteristics = DEFAULT_CHARACTERISTICS) {
+        this.characteristics = characteristics;
+    }
     static empty<R>(): Advancer<R> {
         // tslint:disable-next-line
         return new (class extends Advancer<R> {

@@ -9,7 +9,7 @@ export class AdvancerDistinct<T> extends Advancer<T> {
     private readonly by: (elem: T) => any;
 
     constructor(upstream: Advancer<T>, by: (elem: T) => any) {
-        super();
+        super(upstream.characteristics);
         this.upstream = upstream;
         this.by = by;
         this.set = new Set<T>();

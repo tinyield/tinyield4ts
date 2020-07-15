@@ -9,7 +9,7 @@ export class AdvancerTake<T> extends Advancer<T> {
     private index: number;
 
     constructor(upstream: Query<T>, n: number) {
-        super();
+        super(upstream.characteristics);
         this.upstream = upstream;
         this.n = n;
         this.index = 0;
@@ -24,7 +24,7 @@ export class AdvancerTake<T> extends Advancer<T> {
     }
 
     traverse(yld: Yield<T>): void {
-        if (this.upstream.characteristics.hasAdvancer) {
+        if (this.upstream.characteristics.isAdvanceable) {
             let next: IteratorResult<T>;
             while (this.index < this.n && (next === undefined || !next.done)) {
                 this.index++;
