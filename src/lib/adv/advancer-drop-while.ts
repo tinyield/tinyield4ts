@@ -1,6 +1,6 @@
 import {Advancer} from '../advancer';
 import {Yield} from '../yield';
-import {IteratorReturnResultImpl} from '../utils/iterator-return-result';
+import {DONE} from '../utils/iterator-return-result';
 
 export class AdvancerDropWhile<T> extends Advancer<T> {
     private readonly upstream: Advancer<T>;
@@ -26,7 +26,7 @@ export class AdvancerDropWhile<T> extends Advancer<T> {
             }
             curr = this.upstream.next();
         }
-        return new IteratorReturnResultImpl(undefined);
+        return DONE;
     }
 
     traverse(yld: Yield<T>): void {

@@ -1,6 +1,6 @@
 import {Advancer} from '../advancer';
 import {IteratorYieldImpl} from '../utils/iterator-yield';
-import {IteratorReturnResultImpl} from '../utils/iterator-return-result';
+import {DONE} from '../utils/iterator-return-result';
 import {Yield} from '../yield';
 import {getMergedCharacteristics} from '../characteristics';
 
@@ -20,7 +20,7 @@ export class AdvancerZip<T, U, R> extends Advancer<R> {
         const upstreamCurrent: IteratorResult<T> = this.upstream.next();
         const otherCurrent: IteratorResult<U> = this.other.next();
         if (upstreamCurrent.done || otherCurrent.done) {
-            return new IteratorReturnResultImpl(undefined);
+            return DONE;
         }
         return new IteratorYieldImpl(this.zipper(upstreamCurrent.value as T, otherCurrent.value as U));
     }

@@ -1,6 +1,6 @@
 import {Advancer} from '../advancer';
 import {bye, Yield} from '../yield';
-import {IteratorReturnResultImpl} from '../utils/iterator-return-result';
+import {DONE} from '../utils/iterator-return-result';
 import {Query} from '../query';
 
 export class AdvancerTake<T> extends Advancer<T> {
@@ -17,7 +17,7 @@ export class AdvancerTake<T> extends Advancer<T> {
 
     next(): IteratorResult<T> {
         if (this.index >= this.n) {
-            return new IteratorReturnResultImpl(undefined);
+            return DONE;
         }
         this.index++;
         return this.upstream.next();

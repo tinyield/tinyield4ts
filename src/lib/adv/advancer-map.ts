@@ -1,6 +1,6 @@
 import {Advancer} from '../advancer';
 import {IteratorYieldImpl} from '../utils/iterator-yield';
-import {IteratorReturnResultImpl} from '../utils/iterator-return-result';
+import {DONE} from '../utils/iterator-return-result';
 import {Yield} from '../yield';
 
 export class AdvancerMap<T, R> extends Advancer<R> {
@@ -16,7 +16,7 @@ export class AdvancerMap<T, R> extends Advancer<R> {
     next(): IteratorResult<R> {
         const curr: IteratorResult<T> = this.upstream.next();
         if (curr.done) {
-            return new IteratorReturnResultImpl(undefined);
+            return DONE;
         }
         return new IteratorYieldImpl(this.mapper(curr.value as T));
     }

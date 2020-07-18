@@ -1,7 +1,7 @@
 import {Advancer} from '../advancer';
 import {Yield} from '../yield';
 import {IteratorYieldImpl} from '../utils/iterator-yield';
-import {IteratorReturnResultImpl} from '../utils/iterator-return-result';
+import {DONE} from '../utils/iterator-return-result';
 
 export class AdvancerArray<T> extends Advancer<T> {
     readonly source: T[];
@@ -19,7 +19,7 @@ export class AdvancerArray<T> extends Advancer<T> {
             this.current++;
             return new IteratorYieldImpl(this.source[index]);
         }
-        return new IteratorReturnResultImpl(undefined);
+        return DONE;
     }
 
     traverse(yld: Yield<T>): void {

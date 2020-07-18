@@ -1,5 +1,5 @@
 import {Traverseable} from './traverser';
-import {IteratorReturnResultImpl} from './utils/iterator-return-result';
+import {DONE} from './utils/iterator-return-result';
 import {Yield} from './yield';
 import {Characteristics, DEFAULT_CHARACTERISTICS} from './characteristics';
 
@@ -12,7 +12,7 @@ export abstract class Advancer<T> implements Iterator<T>, Traverseable<T> {
         // tslint:disable-next-line
         return new (class extends Advancer<R> {
             next(): IteratorResult<R> {
-                return new IteratorReturnResultImpl(undefined);
+                return DONE;
             }
 
             traverse(yld: Yield<R>) {

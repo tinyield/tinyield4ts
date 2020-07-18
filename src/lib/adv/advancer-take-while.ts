@@ -1,6 +1,6 @@
 import {Advancer} from '../advancer';
 import {bye, Yield} from '../yield';
-import {IteratorReturnResultImpl} from '../utils/iterator-return-result';
+import {DONE} from '../utils/iterator-return-result';
 import {Query} from '../query';
 
 export class AdvancerTakeWhile<T> extends Advancer<T> {
@@ -19,7 +19,7 @@ export class AdvancerTakeWhile<T> extends Advancer<T> {
         const curr = this.upstream.next();
         if (this.finished || curr.done || !this.predicate(curr.value)) {
             this.finished = true;
-            return new IteratorReturnResultImpl(undefined);
+            return DONE;
         }
         return curr;
     }

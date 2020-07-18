@@ -1,6 +1,6 @@
 import {Advancer} from '../advancer';
 import {IteratorYieldImpl} from '../utils/iterator-yield';
-import {IteratorReturnResultImpl} from '../utils/iterator-return-result';
+import {DONE} from '../utils/iterator-return-result';
 import {Yield} from '../yield';
 import {getMergedCharacteristics} from '../characteristics';
 
@@ -33,6 +33,6 @@ export class AdvancerConcat<T> extends Advancer<T> {
         if (!iteration.done) {
             return new IteratorYieldImpl(iteration.value);
         }
-        return new IteratorReturnResultImpl(undefined);
+        return DONE;
     }
 }

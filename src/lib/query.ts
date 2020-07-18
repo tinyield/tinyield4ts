@@ -144,16 +144,16 @@ export class Query<T> extends Advancer<T> {
      * Query is empty.
      */
     first(): T {
-        let first: T;
         if (this.characteristics.isAdvanceable) {
-            first = this.next().value;
+            return this.next().value;
         } else {
+            let first: T;
             this.shortCircuit(elem => {
                 first = elem;
                 bye();
             });
+            return first;
         }
-        return first;
     }
 
     /**
@@ -259,24 +259,23 @@ export class Query<T> extends Advancer<T> {
      * {@code false} is returned and the predicate is not evaluated.
      */
     anyMatch(predicate: (elem: T) => boolean): boolean {
-        let found = false;
         if (this.characteristics.isAdvanceable) {
-            let next = this.next();
-            while (!next.done && !found) {
+            for (let next = this.next(); !next.done; next = this.next()) {
                 if (predicate(next.value)) {
-                    found = true;
+                    return true;
                 }
-                next = this.next();
             }
+            return false;
         } else {
+            let found = false;
             this.shortCircuit(elem => {
                 if (predicate(elem)) {
                     found = true;
                     bye();
                 }
             });
+            return found;
         }
-        return found;
     }
 
     /**
@@ -286,24 +285,23 @@ export class Query<T> extends Advancer<T> {
      * {@code true} is returned and the predicate is not evaluated.
      */
     allMatch(predicate: (elem: T) => boolean): boolean {
-        let succeed = true;
         if (this.characteristics.isAdvanceable) {
-            let next = this.next();
-            while (!next.done && succeed) {
+            for (let next = this.next(); !next.done; next = this.next()) {
                 if (!predicate(next.value)) {
-                    succeed = false;
+                    return false;
                 }
-                next = this.next();
             }
+            return true;
         } else {
+            let succeed = true;
             this.shortCircuit(elem => {
                 if (!predicate(elem)) {
                     succeed = false;
                     bye();
                 }
             });
+            return succeed;
         }
-        return succeed;
     }
 
     /**

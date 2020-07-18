@@ -1,6 +1,6 @@
 import {Advancer} from '../advancer';
 import {IteratorYieldImpl} from '../utils/iterator-yield';
-import {IteratorReturnResultImpl} from '../utils/iterator-return-result';
+import {DONE} from '../utils/iterator-return-result';
 import {Yield} from '../yield';
 
 export class AdvancerDistinct<T> extends Advancer<T> {
@@ -22,7 +22,7 @@ export class AdvancerDistinct<T> extends Advancer<T> {
                 return new IteratorYieldImpl(curr.value as T);
             }
         }
-        return new IteratorReturnResultImpl(undefined);
+        return DONE;
     }
 
     traverse(yld: Yield<T>): void {

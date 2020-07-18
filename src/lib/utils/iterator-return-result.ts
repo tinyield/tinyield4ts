@@ -1,9 +1,11 @@
-export class IteratorReturnResultImpl<T> implements IteratorReturnResult<T> {
-    done: true;
-    value: T;
+class IteratorReturnResultImpl implements IteratorReturnResult<any> {
+    readonly done: true;
+    readonly value: any;
 
-    constructor(value: T) {
-        this.value = value;
+    constructor() {
+        this.value = undefined;
         this.done = true;
     }
 }
+
+export const DONE = new IteratorReturnResultImpl();

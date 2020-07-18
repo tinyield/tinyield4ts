@@ -1,5 +1,5 @@
 import {Advancer} from '../advancer';
-import {IteratorReturnResultImpl} from '../utils/iterator-return-result';
+import {DONE} from '../utils/iterator-return-result';
 import {Yield} from '../yield';
 import {Query} from '../query';
 
@@ -20,7 +20,7 @@ export class AdvancerFlatmap<T, R> extends Advancer<R> {
         for (curr = this.src.next(); curr.done; curr = this.src.next()) {
             const aux = this.upstream.next();
             if (aux.done) {
-                return new IteratorReturnResultImpl(undefined);
+                return DONE;
             }
             this.src = this.mapper(aux.value as T);
         }
