@@ -2,6 +2,7 @@ import {of, Query} from '../../lib/query';
 import {BEER, Beverage, getDinnerBeverages, getPackOfBeer} from '../model/beverage';
 import {getResultFromIteration, getResultFromTraversal} from '../utils/traversal-utils';
 import {assertSameArray} from '../utils/testing-utils';
+import {expect} from 'chai';
 
 describe('AdvancerDistinct', () => {
     let dinnerBeverages: Beverage[];
@@ -30,8 +31,8 @@ describe('AdvancerDistinct', () => {
         });
 
         it('should return a new sequences', () => {
-            expect(distinct).not.toEqual(dinnerBeveragesQuery);
-            expect(distinctBeer).not.toEqual(beerPackQuery);
+            expect(distinct).not.to.equal(dinnerBeveragesQuery);
+            expect(distinctBeer).not.to.equal(beerPackQuery);
         });
 
         describe('when the sequences are iterated', () => {

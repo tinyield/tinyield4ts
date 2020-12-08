@@ -2,6 +2,7 @@ import {of, Query} from '../../lib/query';
 import {Beverage, getDinnerBeverages} from '../model/beverage';
 import {getResultFromIteration, getResultFromTraversal} from '../utils/traversal-utils';
 import {assertSameArray} from '../utils/testing-utils';
+import {expect} from 'chai';
 
 describe('AdvancerPeek', () => {
     let dinnerBeverages: Beverage[];
@@ -26,7 +27,7 @@ describe('AdvancerPeek', () => {
         });
 
         it('should return a new sequence', () => {
-            expect(peeked).not.toEqual(dinnerBeveragesQuery as any);
+            expect(peeked).not.to.equal(dinnerBeveragesQuery as unknown);
         });
 
         describe('when the sequence is iterated', () => {

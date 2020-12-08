@@ -8,18 +8,6 @@
     },
     "main": "index.js",
     "types": "index.d.ts",
-    "scripts": {
-        "build:snapshot": "npm pack ./dist",
-        "fix:code-style": "gts fix",
-        "test": "karma start",
-        "check:code-style": "gts check",
-        "sonar": "node analyse.js",
-        "build": "tsc -p tsconfig.lib.json && copyfiles package.json README.md dist",
-        "clean": "gts clean",
-        "pretest": "npm run clean",
-        "prebuild": "npm run clean",
-        "prebuild:snapshot": "npm run build"
-    },
     "contributors": [
         {
             "name": "Fernando Miguel Gamboa de Carvalho",
@@ -43,6 +31,21 @@
         "query",
         "jayield"
     ],
+    "scripts": {
+        "build:snapshot": "npm pack ./dist",
+        "test": "nyc --reporter=lcov mocha ./build/test",
+        "lint": "gts lint",
+        "clean": "gts clean && rimraf ./dist && rimraf ./*.tgz",
+        "sonar": "node analyse.js",
+        "compile": "tsc",
+        "fix": "gts fix",
+        "build": "tsc -p tsconfig.lib.json && copyfiles package.json README.md dist",
+        "prebuild:snapshot": "npm run build",
+        "prebuild": "npm run clean",
+        "prepare": "npm.cmd run compile",
+        "pretest": "npm.cmd run compile",
+        "posttest": "npm.cmd run lint"
+    },
     "husky": {
         "hooks": {
             "pre-commit": "lint-staged"
@@ -52,24 +55,18 @@
         "*.ts": "prettier --check"
     },
     "devDependencies": {
-        "@types/jasmine": "^2.8.7",
-        "@types/node": "^10.0.3",
-        "copyfiles": "^2.1.1",
-        "gts": "^1.1.2",
-        "husky": "^3.1.0",
-        "jasmine-core": "^3.5.0",
-        "karma": "^4.4.1",
-        "karma-chrome-launcher": "^3.1.0",
-        "karma-coverage-istanbul-reporter": "^2.1.1",
-        "karma-jasmine": "^2.0.1",
-        "karma-jasmine-html-reporter": "^1.4.2",
-        "karma-spec-reporter": "0.0.32",
-        "karma-typescript": "^4.1.1",
-        "lint-staged": "^9.5.0",
-        "mrm": "^2.0.2",
+        "@types/chai": "^4.2.14",
+        "@types/mocha": "^8.2.0",
+        "@types/node": "^14.11.2",
+        "chai": "^4.2.0",
+        "copyfiles": "^2.4.1",
+        "gts": "^3.0.3",
+        "husky": "^4.3.5",
+        "lint-staged": "^10.5.3",
+        "mocha": "^8.2.1",
+        "nyc": "^15.1.0",
+        "rimraf": "^3.0.2",
         "sonarqube-scanner": "^2.6.0",
-        "tslint": "^5.10.0",
-        "tslint-config-standard-plus": "^2.3.0",
-        "typescript": "^3.7.5"
+        "typescript": "^4.0.3"
     }
 }

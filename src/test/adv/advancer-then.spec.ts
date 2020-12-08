@@ -3,6 +3,7 @@ import {Traverser} from '../../lib/traverser';
 import {Query} from '../../lib/query';
 import {getResultFromIteration, getResultFromTraversal} from '../utils/traversal-utils';
 import {assertSameArray} from '../utils/testing-utils';
+import {expect} from 'chai';
 
 describe('AdvancerThen', () => {
     const arrange = [7, 7, 8, 9, 9, 11, 11, 7];
@@ -31,7 +32,7 @@ describe('AdvancerThen', () => {
         });
 
         it('should return a sequence', () => {
-            expect(custom).toBeDefined();
+            expect(custom).to.not.be.undefined;
         });
 
         describe('when the sequence is iterated', () => {
@@ -68,7 +69,7 @@ describe('AdvancerThen', () => {
             });
 
             it('should report the expected number', () => {
-                expect(actual).toEqual(firstExpectation);
+                expect(actual).to.equal(firstExpectation);
             });
         });
 
@@ -82,7 +83,7 @@ describe('AdvancerThen', () => {
             });
 
             it('should return a new sequence', () => {
-                expect(taken).not.toEqual(custom);
+                expect(taken).not.to.equal(custom);
             });
 
             describe('when the sequence is iterated', () => {
@@ -116,7 +117,7 @@ describe('AdvancerThen', () => {
 
         beforeEach(() => {
             let index = 0;
-            custom = Query.iterate(arrange[index], elem => {
+            custom = Query.iterate(arrange[index], () => {
                 index++;
                 return arrange[index % arrange.length];
             })
@@ -125,7 +126,7 @@ describe('AdvancerThen', () => {
         });
 
         it('should return a sequence', () => {
-            expect(custom).toBeDefined();
+            expect(custom).to.not.be.undefined;
         });
 
         describe('when first is called', () => {
@@ -138,7 +139,7 @@ describe('AdvancerThen', () => {
             });
 
             it('should report the expected number', () => {
-                expect(actual).toEqual(expectation);
+                expect(actual).to.equal(expectation);
             });
         });
 
@@ -152,7 +153,7 @@ describe('AdvancerThen', () => {
             });
 
             it('should return a new sequence', () => {
-                expect(taken).not.toEqual(custom);
+                expect(taken).not.to.equal(custom);
             });
 
             describe('when the sequence is iterated', () => {
@@ -194,7 +195,7 @@ describe('AdvancerThen', () => {
         });
 
         it('should return a sequence', () => {
-            expect(custom).toBeDefined();
+            expect(custom).to.not.be.undefined;
         });
 
         describe('when first is called', () => {
@@ -207,7 +208,7 @@ describe('AdvancerThen', () => {
             });
 
             it('should report the expected number', () => {
-                expect(actual).toEqual(expectation);
+                expect(actual).to.equal(expectation);
             });
         });
 
@@ -225,7 +226,7 @@ describe('AdvancerThen', () => {
             });
 
             it('should return a new sequence', () => {
-                expect(taken).not.toEqual(custom);
+                expect(taken).not.to.equal(custom);
             });
 
             describe('when the sequence is iterated', () => {
@@ -265,12 +266,12 @@ describe('AdvancerThen', () => {
             });
 
             it('should return a new sequence', () => {
-                expect(taken).not.toEqual(custom);
+                expect(taken).not.to.equal(custom);
             });
 
             describe('when the sequence is iterated', () => {
                 let actual: number[];
-                let error: any;
+                let error: unknown;
 
                 beforeEach(() => {
                     try {
@@ -281,15 +282,15 @@ describe('AdvancerThen', () => {
                 });
 
                 it('should re-throw the error', () => {
-                    expect(error).toBeDefined();
-                    expect(error).not.toEqual(SHORT_CIRCUITING_ERROR);
-                    expect(actual).toBeUndefined();
+                    expect(error).to.not.be.undefined;
+                    expect(error).not.to.equal(SHORT_CIRCUITING_ERROR);
+                    expect(actual).to.be.undefined;
                 });
             });
 
             describe('when the sequence is traversed', () => {
                 let actual: number[];
-                let error: any;
+                let error: unknown;
 
                 beforeEach(() => {
                     try {
@@ -300,9 +301,9 @@ describe('AdvancerThen', () => {
                 });
 
                 it('should re-throw the error', () => {
-                    expect(error).toBeDefined();
-                    expect(error).not.toEqual(SHORT_CIRCUITING_ERROR);
-                    expect(actual).toBeUndefined();
+                    expect(error).to.not.be.undefined;
+                    expect(error).not.to.equal(SHORT_CIRCUITING_ERROR);
+                    expect(actual).to.be.undefined;
                 });
             });
         });
@@ -317,11 +318,11 @@ describe('AdvancerThen', () => {
             });
 
             it('should return true when matched', () => {
-                expect(actualMatch).toBeTruthy();
+                expect(actualMatch).to.be.true;
             });
 
             it('should return false when no matches are found', () => {
-                expect(actualNoMatch).toBeFalsy();
+                expect(actualNoMatch).to.be.false;
             });
         });
 
@@ -335,11 +336,11 @@ describe('AdvancerThen', () => {
             });
 
             it('should return true when matched', () => {
-                expect(actualMatch).toBeTruthy();
+                expect(actualMatch).to.be.true;
             });
 
             it('should return false when no matches are found', () => {
-                expect(actualNoMatch).toBeFalsy();
+                expect(actualNoMatch).to.be.false;
             });
         });
     });

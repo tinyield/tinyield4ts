@@ -3,6 +3,7 @@ import {SHORT_CIRCUITING_ERROR} from '..';
 import {BEER, Beverage, COLA, getDinnerBeverages, getPackOfBeer, WINE} from './model/beverage';
 import {getResultFromIteration, getResultFromTraversal} from './utils/traversal-utils';
 import {assertSameArray} from './utils/testing-utils';
+import {expect} from 'chai';
 
 describe('Query', () => {
     let dinnerBeverages: Beverage[];
@@ -23,8 +24,8 @@ describe('Query', () => {
         });
 
         it('should return a sequence', () => {
-            expect(dinnerBeveragesQuery).toBeDefined('dinnerBeveragesQuery is undefined');
-            expect(beerPackQuery).toBeDefined('beerPackQuery is undefined');
+            expect(dinnerBeveragesQuery).to.not.be.undefined;
+            expect(beerPackQuery).to.not.be.undefined;
         });
 
         describe('when "sorted" is called', () => {
@@ -65,14 +66,14 @@ describe('Query', () => {
             });
 
             it('should traverse the sequence', () => {
-                expect(actual.size).toEqual(expected.size);
+                expect(actual.size).to.equal(expected.size);
                 const actualIterator = actual.values();
                 const expectedIterator = expected.values();
                 for (let i = 0; i < actual.size; i++) {
-                    expect(actualIterator.next().value).toEqual(expectedIterator.next().value);
+                    expect(actualIterator.next().value).to.equal(expectedIterator.next().value);
                 }
-                expect(actualIterator.next().done).toBeTruthy();
-                expect(expectedIterator.next().done).toBeTruthy();
+                expect(actualIterator.next().done).to.be.true;
+                expect(expectedIterator.next().done).to.be.true;
             });
         });
 
@@ -104,7 +105,7 @@ describe('Query', () => {
             });
 
             describe('when a non ShortCircuitingError error is used to short circuit', () => {
-                let error: any;
+                let error: unknown;
 
                 beforeEach(() => {
                     try {
@@ -117,8 +118,8 @@ describe('Query', () => {
                 });
 
                 it('should throw the error', () => {
-                    expect(error).toBeDefined('no error was thrown');
-                    expect(error).not.toEqual(SHORT_CIRCUITING_ERROR);
+                    expect(error).to.not.be.undefined;
+                    expect(error).not.to.equal(SHORT_CIRCUITING_ERROR);
                 });
             });
         });
@@ -131,8 +132,8 @@ describe('Query', () => {
             });
 
             it('should traverse the sequence', () => {
-                expect(actual).toBeDefined();
-                expect(actual).toEqual(WINE);
+                expect(actual).to.not.be.undefined;
+                expect(actual).to.equal(WINE);
             });
         });
 
@@ -144,8 +145,37 @@ describe('Query', () => {
             });
 
             it('should traverse the sequence', () => {
-                expect(actual).toBeDefined();
-                expect(actual).toEqual(COLA);
+                expect(actual).to.not.be.undefined;
+                expect(actual).to.equal(COLA);
+            });
+        });
+
+        describe('when "sum" is called', () => {
+            let actual: number;
+
+            beforeEach(() => {
+                actual = dinnerBeveragesQuery.sum(b => b.cost);
+            });
+
+            it('should return the sum', () => {
+                expect(actual).to.not.be.undefined;
+                expect(actual).to.equal(dinnerBeverages.reduce((p, c) => p + c.cost, 0));
+            });
+        });
+
+        describe('when "average" is called', () => {
+            let actual: number;
+            let actualOnEmpty: number;
+
+            beforeEach(() => {
+                actual = dinnerBeveragesQuery.average(b => b.cost);
+                actualOnEmpty = Query.of<Beverage>([]).average(undefined);
+            });
+
+            it('should return the average', () => {
+                expect(actual).to.not.be.undefined;
+                expect(actualOnEmpty).to.be.undefined;
+                expect(actual).to.equal(dinnerBeverages.reduce((p, c) => p + c.cost, 0) / dinnerBeverages.length);
             });
         });
 
@@ -159,11 +189,11 @@ describe('Query', () => {
             });
 
             describe('when a match is made', () => {
-                it('should return true', () => expect(positive).toBeTruthy());
+                it('should return true', () => expect(positive).to.be.true);
             });
 
             describe("when a match isn't made", () => {
-                it('should return false', () => expect(negative).toBeFalsy());
+                it('should return false', () => expect(negative).to.be.false);
             });
         });
 
@@ -177,11 +207,11 @@ describe('Query', () => {
             });
 
             describe('when all match', () => {
-                it('should return true', () => expect(positive).toBeTruthy());
+                it('should return true', () => expect(positive).to.be.true);
             });
 
             describe('when not all match', () => {
-                it('should return false', () => expect(negative).toBeFalsy());
+                it('should return false', () => expect(negative).to.be.false);
             });
         });
 
@@ -195,11 +225,11 @@ describe('Query', () => {
             });
 
             describe('when none match', () => {
-                it('should return true', () => expect(positive).toBeTruthy());
+                it('should return true', () => expect(positive).to.be.true);
             });
 
             describe('when any match', () => {
-                it('should return false', () => expect(negative).toBeFalsy());
+                it('should return false', () => expect(negative).to.be.false);
             });
         });
 
@@ -213,8 +243,8 @@ describe('Query', () => {
             });
 
             it('should return the element count for the Query', () => {
-                expect(actual).toBeDefined();
-                expect(actual).toEqual(expectation);
+                expect(actual).to.not.be.undefined;
+                expect(actual).to.equal(expectation);
             });
         });
 
@@ -234,10 +264,10 @@ describe('Query', () => {
             });
 
             it("should return the result of the Query's reduction", () => {
-                expect(actual).toBeDefined();
-                expect(actualWIdentity).toBeDefined();
-                expect(actual).toEqual(actualWIdentity);
-                expect(actual).toEqual(expectation);
+                expect(actual).to.not.be.undefined;
+                expect(actualWIdentity).to.not.be.undefined;
+                expect(actual).to.equal(actualWIdentity);
+                expect(actual).to.equal(expectation);
             });
         });
 
@@ -253,8 +283,8 @@ describe('Query', () => {
             });
 
             it("should return the Query's elements joined", () => {
-                expect(actual).toBeDefined();
-                expect(actual).toEqual(expectation);
+                expect(actual).to.not.be.undefined;
+                expect(actual).to.equal(expectation);
             });
         });
     });
@@ -267,7 +297,7 @@ describe('Query', () => {
         });
 
         it('should return a sequence', () => {
-            expect(sequence).toBeDefined('sequence is undefined');
+            expect(sequence).to.not.be.undefined;
         });
 
         describe('when "take" is called', () => {
@@ -280,7 +310,7 @@ describe('Query', () => {
             });
 
             it('should return a new sequence', () => {
-                expect(taken).not.toEqual(sequence);
+                expect(taken).not.to.equal(sequence);
             });
 
             describe('when the sequence is iterated', () => {
@@ -318,8 +348,8 @@ describe('Query', () => {
             });
 
             it('should return the first element of the Query', () => {
-                expect(actual).toBeDefined();
-                expect(actual).toEqual(expectation);
+                expect(actual).to.not.be.undefined;
+                expect(actual).to.deep.equal(expectation);
             });
         });
     });
@@ -332,7 +362,7 @@ describe('Query', () => {
         });
 
         it('should return a sequence', () => {
-            expect(sequence).toBeDefined('sequence is undefined');
+            expect(sequence).to.not.be.undefined;
         });
 
         describe('when "take" is called', () => {
@@ -345,7 +375,7 @@ describe('Query', () => {
             });
 
             it('should return a new sequence', () => {
-                expect(taken).not.toEqual(sequence);
+                expect(taken).not.to.equal(sequence);
             });
 
             describe('when the sequence is iterated', () => {
@@ -383,8 +413,8 @@ describe('Query', () => {
             });
 
             it('should return the first element of the Query', () => {
-                expect(actual).toBeDefined();
-                expect(actual).toEqual(expectation);
+                expect(actual).to.not.be.undefined;
+                expect(actual).to.deep.equal(expectation);
             });
         });
     });
@@ -397,7 +427,7 @@ describe('Query', () => {
         });
 
         it('should return undefined', () => {
-            expect(actual).toBeUndefined();
+            expect(actual).to.be.undefined;
         });
     });
 });

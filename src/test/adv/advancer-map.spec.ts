@@ -2,6 +2,7 @@ import {of, Query} from '../../lib/query';
 import {Beverage, COFFEE, getDinnerBeverages} from '../model/beverage';
 import {getResultFromIteration, getResultFromTraversal} from '../utils/traversal-utils';
 import {assertSameArray} from '../utils/testing-utils';
+import {expect} from 'chai';
 
 describe('AdvancerMap', () => {
     let dinnerBeverages: Beverage[];
@@ -22,7 +23,7 @@ describe('AdvancerMap', () => {
         });
 
         it('should return a new sequence', () => {
-            expect(mapped).not.toEqual(dinnerBeveragesQuery as any);
+            expect(mapped).not.to.equal(dinnerBeveragesQuery as unknown);
         });
 
         describe('when the sequence is iterated', () => {
@@ -59,7 +60,7 @@ describe('AdvancerMap', () => {
             });
 
             it('should return a new sequence', () => {
-                expect(filtered).not.toEqual(mapped);
+                expect(filtered).not.to.equal(mapped);
             });
 
             describe('when the sequence is iterated', () => {

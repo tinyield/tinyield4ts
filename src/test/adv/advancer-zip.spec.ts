@@ -1,6 +1,7 @@
 import {of, Query} from '../../lib/query';
 import {BEER, Beverage, getDinnerBeverages, getPackOfBeer} from '../model/beverage';
 import {getResultFromIteration, getResultFromTraversal} from '../utils/traversal-utils';
+import {expect} from 'chai';
 
 describe('AdvancerZip', () => {
     let dinnerBeverages: Beverage[];
@@ -17,10 +18,10 @@ describe('AdvancerZip', () => {
 
     describe('when "zip" is called', () => {
         const assertSameZippedArray = (actual: Beverage[][], expected: Beverage[][]) => {
-            expect(actual.length).toEqual(expected.length);
+            expect(actual.length).to.equal(expected.length);
             for (let i = 0; i < actual.length; i++) {
-                expect(actual[i][0]).toEqual(expected[i][0]);
-                expect(actual[i][1]).toEqual(expected[i][1]);
+                expect(actual[i][0]).to.equal(expected[i][0]);
+                expect(actual[i][1]).to.equal(expected[i][1]);
             }
         };
 
@@ -33,7 +34,7 @@ describe('AdvancerZip', () => {
         });
 
         it('should return a new sequence', () => {
-            expect(zipped).not.toEqual(dinnerBeveragesQuery as any);
+            expect(zipped).not.to.equal(dinnerBeveragesQuery as unknown);
         });
 
         describe('when the sequence is iterated', () => {

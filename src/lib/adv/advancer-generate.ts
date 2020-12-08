@@ -15,6 +15,7 @@ export class AdvancerGenerate<T> extends Advancer<T> {
     }
 
     traverse(yld: Yield<T>): void {
+        // eslint-disable-next-line no-constant-condition
         while (true) {
             yld(this.supplier());
         }

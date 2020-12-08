@@ -3,14 +3,13 @@
     "compilerOptions": {
         "rootDir": "src",
         "sourceMap": true,
-        "target": "es5",
+        "target": "esNEXT",
         "declaration": true,
-        "outDir": "dist",
+        "resolveJsonModule": true,
+        "outDir": "build",
         "noImplicitAny": true,
         "noImplicitReturns": true,
         "alwaysStrict": true,
-        "downlevelIteration": true,
-        "allowJs": false,
         "strict": true,
         "allowUnreachableCode": false,
         "forceConsistentCasingInFileNames": true,
@@ -19,15 +18,9 @@
         "strictFunctionTypes": true,
         "noUnusedLocals": true,
         "strictNullChecks": false,
-        "lib": [
-            "es2016",
-            "dom",
-            "esnext",
-            "esnext.asynciterable"
-        ]
+        "allowSyntheticDefaultImports": true
     },
     "include": [
-        "src/**/*.ts",
-        "test/**/*.ts"
+        "src/**/*.ts"
     ]
 }

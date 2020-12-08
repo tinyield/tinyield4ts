@@ -2,7 +2,7 @@ import {Advancer} from '../advancer';
 import {Traverser} from '../traverser';
 import {Query} from '../query';
 import {bye, Yield} from '../yield';
-import {SHORT_CIRCUITING_ERROR} from '../../lib/error/short-circuiting-error';
+import {SHORT_CIRCUITING_ERROR} from '../error/short-circuiting-error';
 import {Characteristics} from '../characteristics';
 
 export class AdvancerThen<T, R> extends Advancer<R> {

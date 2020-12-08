@@ -2,6 +2,7 @@ import {Query} from '../../lib/query';
 import {BEER, Beverage, COFFEE, COLA, WINE} from '../model/beverage';
 import {getResultFromIteration, getResultFromTraversal} from '../utils/traversal-utils';
 import {assertSameArray} from '../utils/testing-utils';
+import {expect} from 'chai';
 
 describe('AdvancerFlatmap', () => {
     describe('when "flatMap" is called', () => {
@@ -14,7 +15,7 @@ describe('AdvancerFlatmap', () => {
         });
 
         it('should return a new sequence', () => {
-            expect(flatMapped).not.toEqual(sequenceOfSequences as any);
+            expect(flatMapped).not.to.equal(sequenceOfSequences as unknown);
         });
 
         describe('when the sequence is iterated', () => {

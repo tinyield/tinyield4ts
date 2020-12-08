@@ -15,7 +15,7 @@ export abstract class Advancer<T> implements Iterator<T>, Traverseable<T> {
                 return DONE;
             }
 
-            traverse(yld: Yield<R>) {
+            traverse() {
                 /* Do nothing. Since there are no elements, thus there is nothing to do. */
             }
         })();

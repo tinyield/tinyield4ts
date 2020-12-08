@@ -1,6 +1,6 @@
-class IteratorReturnResultImpl implements IteratorReturnResult<any> {
+class IteratorReturnResultImpl implements IteratorReturnResult<unknown> {
     readonly done: true;
-    readonly value: any;
+    readonly value: unknown;
 
     constructor() {
         this.value = undefined;

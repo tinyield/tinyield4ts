@@ -2,6 +2,7 @@ import {of, Query} from '../../lib/query';
 import {Beverage, COLA, getDinnerBeverages} from '../model/beverage';
 import {getResultFromIteration, getResultFromTraversal} from '../utils/traversal-utils';
 import {assertSameArray} from '../utils/testing-utils';
+import {expect} from 'chai';
 
 describe('AdvancerTakeWhile', () => {
     let dinnerBeverages: Beverage[];
@@ -22,7 +23,7 @@ describe('AdvancerTakeWhile', () => {
         });
 
         it('should return a new sequence', () => {
-            expect(taken).not.toEqual(dinnerBeveragesQuery);
+            expect(taken).not.to.equal(dinnerBeveragesQuery);
         });
 
         describe('when the sequence is iterated', () => {

@@ -1,5 +1,7 @@
-export class Beverage {
-    constructor(public readonly name: string, public readonly cost: number) {}
+export class Beverage extends Object {
+    constructor(public readonly name: string, public readonly cost: number) {
+        super();
+    }
 }
 
 export const BEER = new Beverage('beer', 1);

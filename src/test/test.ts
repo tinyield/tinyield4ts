@@ -1,0 +1,12 @@
+import './adv/advancer-concat.spec';
+import './adv/advancer-distinct.spec';
+import './adv/advancer-drop-while.spec';
+import './adv/advancer-filter.spec';
+import './adv/advancer-flatmap.spec';
+import './adv/advancer-map.spec';
+import './adv/advancer-peek.spec';
+import './adv/advancer-skip.spec';
+import './adv/advancer-take-while.spec';
+import './adv/advancer-take.spec';
+import './adv/advancer-then.spec';
+import './adv/advancer-zip.spec';

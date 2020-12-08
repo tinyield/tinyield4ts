@@ -16,7 +16,6 @@ import {AdvancerTakeWhile} from './adv/advancer-take-while';
 import {AdvancerGenerate} from './adv/advancer-generate';
 import {AdvancerConcat} from './adv/advancer-concat';
 import {AdvancerDropWhile} from './adv/advancer-drop-while';
-import {NumberQuery} from './primitive/number-query';
 
 export class Query<T> extends Advancer<T> {
     protected readonly adv: Advancer<T>;
@@ -190,7 +189,7 @@ export class Query<T> extends Advancer<T> {
      * Returns a query consisting of the distinct elements of this Query
      * by the specified selector.
      */
-    distinctBy(selector: (elem: T) => any): Query<T> {
+    distinctBy<U>(selector: (elem: T) => U): Query<T> {
         return new Query<T>(new AdvancerDistinct(this.adv, selector));
     }
 
@@ -319,13 +318,38 @@ export class Query<T> extends Advancer<T> {
      * Returns the result of the reduction of the elements of this query,
      * using the provided identity value and accumulator.
      */
-    reduce(accumulator: (acc: T, curr: T) => T, identity?: T): T {
+    reduce<U>(accumulator: (acc: U, curr: T) => U, identity?: U): U {
         let result = identity;
         if (identity === undefined) {
             result = this.next().value;
         }
         this.traverse(elem => (result = accumulator(result, elem)));
         return result;
+    }
+
+    /**
+     * Returns the sum of elements in this {@code Query} .
+     * <p>
+     * This is a special case of a reduction.
+     */
+    sum(by: (elem: T) => number): number {
+        return this.reduce((acc, curr) => acc + by(curr), 0);
+    }
+
+    /**
+     * Returns an number describing the arithmetic mean of elements of this {@code Query},
+     * or undefined if this {@code Query} is empty. This is a special case of a reduction.
+     * <p>
+     * This is a terminal operation.
+     */
+    average(by: (elem: T) => number): number {
+        const data = this.toArray();
+        const count = data.length;
+        if (count === 0) {
+            return undefined;
+        }
+
+        return Query.of(data).sum(by) / count;
     }
 
     /**
@@ -380,10 +404,6 @@ export class Query<T> extends Advancer<T> {
      */
     dropWhile(predicate: (elem: T) => boolean): Query<T> {
         return new Query<T>(new AdvancerDropWhile(this.adv, predicate));
-    }
-
-    mapToNumber(mapper: (elem: T) => number): NumberQuery {
-        return new NumberQuery(this.map(mapper));
     }
 }
 

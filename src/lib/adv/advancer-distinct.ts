@@ -3,16 +3,16 @@ import {IteratorYieldImpl} from '../utils/iterator-yield';
 import {DONE} from '../utils/iterator-return-result';
 import {Yield} from '../yield';
 
-export class AdvancerDistinct<T> extends Advancer<T> {
+export class AdvancerDistinct<T, U> extends Advancer<T> {
     private readonly upstream: Advancer<T>;
-    private readonly set: Set<any>;
-    private readonly by: (elem: T) => any;
+    private readonly set: Set<U>;
+    private readonly by: (elem: T) => U;
 
-    constructor(upstream: Advancer<T>, by: (elem: T) => any) {
+    constructor(upstream: Advancer<T>, by: (elem: T) => U) {
         super(upstream.characteristics);
         this.upstream = upstream;
         this.by = by;
-        this.set = new Set<T>();
+        this.set = new Set<U>();
     }
 
     next(): IteratorResult<T> {

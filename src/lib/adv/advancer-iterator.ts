@@ -20,6 +20,7 @@ export class AdvancerIterator<T> extends Advancer<T> {
 
     traverse(yld: Yield<T>): void {
         let current = this.previous;
+        // eslint-disable-next-line no-constant-condition
         while (true) {
             yld(current);
             current = this.operation(current);

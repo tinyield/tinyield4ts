@@ -2,6 +2,7 @@ import {of, Query} from '../../lib/query';
 import {Beverage, COFFEE, getDinnerBeverages, WINE} from '../model/beverage';
 import {getResultFromIteration, getResultFromTraversal} from '../utils/traversal-utils';
 import {assertSameArray} from '../utils/testing-utils';
+import {expect} from 'chai';
 
 describe('AdvancerDropWhile', () => {
     let dinnerBeverages: Beverage[];
@@ -20,11 +21,11 @@ describe('AdvancerDropWhile', () => {
         beforeEach(() => {
             expectation = [WINE, COFFEE];
             dropWhile = dinnerBeveragesQuery.dropWhile(elem => elem.cost < 3);
-            emptyDropWhile = of<Beverage>([]).dropWhile(elem => elem.cost < 3);
+            emptyDropWhile = of<Beverage>([]).dropWhile(undefined);
         });
 
         it('should return a new sequence', () => {
-            expect(dropWhile).not.toEqual(dinnerBeveragesQuery);
+            expect(dropWhile).not.to.equal(dinnerBeveragesQuery);
         });
 
         describe('when the sequence is iterated', () => {
