@@ -14,7 +14,7 @@ jobs:
         runs-on: ${{ matrix.os }}
         strategy:
             matrix:
-                node_version: ['8', '10', '12', '15']
+                node_version: ['10', '12', '15']
                 os: [ubuntu-latest, windows-latest]
 
         steps:
@@ -27,7 +27,6 @@ jobs:
             -   name: npm install, build, lint and test
                 run: |
                     npm clean-install
-                    npm run check:code-style
                     npm run build
                     npm test
     SONAR:

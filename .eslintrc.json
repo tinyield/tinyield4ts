@@ -8,7 +8,10 @@
         "rules": {
             "node/no-unpublished-import": "off",
             "node/no-unpublished-require": "off",
-            "no-process-exit": "off"
+            "no-process-exit": "off",
+            "prettier/prettier": ["error", {
+                "endOfLine":"auto"
+            }]
         }
     }]
 }

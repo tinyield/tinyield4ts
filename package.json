@@ -42,9 +42,9 @@
         "build": "tsc -p tsconfig.lib.json && copyfiles package.json README.md dist",
         "prebuild:snapshot": "npm run build",
         "prebuild": "npm run clean",
-        "prepare": "npm.cmd run compile",
-        "pretest": "npm.cmd run compile",
-        "posttest": "npm.cmd run lint"
+        "prepare": "npm run compile",
+        "pretest": "npm run compile",
+        "posttest": "npm run lint"
     },
     "husky": {
         "hooks": {
