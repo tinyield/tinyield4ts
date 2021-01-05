@@ -4,7 +4,7 @@ import {getResultFromIteration, getResultFromTraversal} from '../utils/traversal
 import {assertSameArray} from '../utils/testing-utils';
 import {expect} from 'chai';
 
-describe('AdvancerDropWhile', () => {
+describe('DropWhile', () => {
     let dinnerBeverages: Beverage[];
     let dinnerBeveragesQuery: Query<Beverage>;
 

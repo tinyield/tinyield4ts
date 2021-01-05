@@ -1,26 +1,39 @@
-import {Traverseable} from './traverser';
-import {DONE} from './utils/iterator-return-result';
 import {Yield} from './yield';
-import {Characteristics, DEFAULT_CHARACTERISTICS} from './characteristics';
 
-export abstract class Advancer<T> implements Iterator<T>, Traverseable<T> {
-    public readonly characteristics: Characteristics;
-    constructor(characteristics: Characteristics = DEFAULT_CHARACTERISTICS) {
-        this.characteristics = characteristics;
-    }
-    static empty<R>(): Advancer<R> {
-        // tslint:disable-next-line
-        return new (class extends Advancer<R> {
-            next(): IteratorResult<R> {
-                return DONE;
-            }
-
-            traverse() {
-                /* Do nothing. Since there are no elements, thus there is nothing to do. */
-            }
-        })();
-    }
-
-    abstract traverse(yld: Yield<T>): void;
-    abstract next(): IteratorResult<T>;
+export interface Advanceable<T> {
+    tryAdvance(yld: Yield<T>): boolean;
 }
+
+export type Advancer<T> = (yld: Yield<T>) => boolean;
+
+export abstract class AbstractAdvancer<T> implements Advanceable<T> {
+    /**
+     * An {@link Advanceable} object without elements.
+     */
+    static empty<R>(): Advanceable<R> {
+        return {
+            tryAdvance: () => false,
+        };
+    }
+
+    /**
+     * Creates an {@link Advanceable} from the {@link Advancer} function
+     * @param advancer the resulting {@link Advanceable}
+     */
+    static of<R>(advancer: Advancer<R>): Advanceable<R> {
+        return {
+            tryAdvance: advancer,
+        };
+    }
+    /**
+     * If a remaining element exists, yields that element through
+     * the given action.
+     */
+    abstract tryAdvance(yld: Yield<T>): boolean;
+}
+export const UNDEFINED_ADVANCER_ERROR = new Error(
+    'Missing tryAdvance() implementation! Use the overloaded then() providing both Advancer and Traverser!'
+);
+export const UNDEFINED_ADVANCER = AbstractAdvancer.of<never>(() => {
+    throw UNDEFINED_ADVANCER_ERROR;
+});

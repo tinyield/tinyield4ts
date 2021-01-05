@@ -4,7 +4,7 @@ import {getResultFromIteration, getResultFromTraversal} from '../utils/traversal
 import {assertSameArray} from '../utils/testing-utils';
 import {expect} from 'chai';
 
-describe('AdvancerDistinct', () => {
+describe('Distinct', () => {
     let dinnerBeverages: Beverage[];
     let packOfBeer: Beverage[];
     let dinnerBeveragesQuery: Query<Beverage>;

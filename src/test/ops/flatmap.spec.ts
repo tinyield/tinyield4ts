@@ -4,7 +4,7 @@ import {getResultFromIteration, getResultFromTraversal} from '../utils/traversal
 import {assertSameArray} from '../utils/testing-utils';
 import {expect} from 'chai';
 
-describe('AdvancerFlatmap', () => {
+describe('Flatmap', () => {
     describe('when "flatMap" is called', () => {
         let flatMapped: Query<Beverage>;
         let sequenceOfSequences: Query<Query<Beverage>>;

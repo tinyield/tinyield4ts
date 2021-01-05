@@ -4,7 +4,7 @@ import {getResultFromIteration, getResultFromTraversal} from '../utils/traversal
 import {assertSameArray} from '../utils/testing-utils';
 import {expect} from 'chai';
 
-describe('AdvancerPeek', () => {
+describe('Filter', () => {
     let dinnerBeverages: Beverage[];
     let dinnerBeveragesQuery: Query<Beverage>;
 
@@ -13,33 +13,28 @@ describe('AdvancerPeek', () => {
         dinnerBeveragesQuery = of(dinnerBeverages);
     });
 
-    describe('when "peek" is called', () => {
-        let peeked: Query<Beverage>;
-        let peekedActual: string[];
-        let peekedExpectation: string[];
+    describe('when "filter" is called', () => {
+        let filtered: Query<Beverage>;
         let expectation: Beverage[];
 
         beforeEach(() => {
-            expectation = dinnerBeverages;
-            peekedExpectation = expectation.map(elem => elem.name);
-            peekedActual = [];
-            peeked = dinnerBeveragesQuery.peek(element => peekedActual.push(element.name));
+            expectation = dinnerBeverages.filter(element => element.cost > 1);
+            filtered = dinnerBeveragesQuery.filter(element => element.cost > 1);
         });
 
         it('should return a new sequence', () => {
-            expect(peeked).not.to.equal(dinnerBeveragesQuery as unknown);
+            expect(filtered).not.to.equal(dinnerBeveragesQuery);
         });
 
         describe('when the sequence is iterated', () => {
             let actual: Beverage[];
 
             beforeEach(() => {
-                actual = getResultFromIteration(peeked);
+                actual = getResultFromIteration(filtered);
             });
 
-            it('should report the mapped elements', () => {
+            it('should only have the filtered elements', () => {
                 assertSameArray(actual, expectation);
-                assertSameArray(peekedActual, peekedExpectation);
             });
         });
 
@@ -47,12 +42,11 @@ describe('AdvancerPeek', () => {
             let actual: Beverage[];
 
             beforeEach(() => {
-                actual = getResultFromTraversal(peeked);
+                actual = getResultFromTraversal(filtered);
             });
 
-            it('should report the mapped elements', () => {
+            it('should only have the filtered elements', () => {
                 assertSameArray(actual, expectation);
-                assertSameArray(peekedActual, peekedExpectation);
             });
         });
     });

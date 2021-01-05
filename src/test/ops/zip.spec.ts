@@ -3,7 +3,7 @@ import {BEER, Beverage, getDinnerBeverages, getPackOfBeer} from '../model/bevera
 import {getResultFromIteration, getResultFromTraversal} from '../utils/traversal-utils';
 import {expect} from 'chai';
 
-describe('AdvancerZip', () => {
+describe('Zip', () => {
     let dinnerBeverages: Beverage[];
     let packOfBeer: Beverage[];
     let dinnerBeveragesQuery: Query<Beverage>;

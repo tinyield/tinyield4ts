@@ -4,11 +4,12 @@ import {Query} from '../../lib/query';
 import {getResultFromIteration, getResultFromTraversal} from '../utils/traversal-utils';
 import {assertSameArray} from '../utils/testing-utils';
 import {expect} from 'chai';
+import {Advancer} from '../../lib/advancer';
 
-describe('AdvancerThen', () => {
+describe('Then', () => {
     const arrange = [7, 7, 8, 9, 9, 11, 11, 7];
 
-    function collapse<T>(src: Query<T>): Traverser<T> {
+    function collapseTrv<T>(src: Query<T>): Traverser<T> {
         return yld => {
             let prev: T;
             src.forEach(item => {
@@ -20,14 +21,36 @@ describe('AdvancerThen', () => {
         };
     }
 
+    function collapseAdv<T>(src: Query<T>): Advancer<T> {
+        let prev: T;
+        return yld => {
+            let curr: T;
+            while (src.tryAdvance(item => (curr = item))) {
+                if (prev === undefined || prev !== curr) {
+                    prev = curr;
+                    yld(curr);
+                    return true;
+                }
+            }
+            return false;
+        };
+    }
+
     describe('when "then" is called', () => {
         let custom: Query<number>;
+        let customWOAdvancer: Query<number>;
         let expectation: number[];
 
         beforeEach(() => {
             expectation = [7, 9, 11, 7];
+            customWOAdvancer = Query.of(arrange)
+                .then(n => collapseTrv(n))
+                .filter(n => n % 2 !== 0);
             custom = Query.of(arrange)
-                .then(n => collapse(n))
+                .then(
+                    n => collapseTrv(n),
+                    n => collapseAdv(n)
+                )
                 .filter(n => n % 2 !== 0);
         });
 
@@ -44,6 +67,41 @@ describe('AdvancerThen', () => {
 
             it('should report elements', () => {
                 assertSameArray(actual, expectation);
+            });
+            describe('when the sequence has no Advancer', () => {
+                it('should throw an error', () => {
+                    let actual: Error;
+                    try {
+                        getResultFromIteration(customWOAdvancer);
+                    } catch (e) {
+                        actual = e;
+                    }
+                    expect(actual).to.not.be.undefined;
+                });
+
+                describe('when allMatch is called', () => {
+                    let actual: boolean;
+
+                    beforeEach(() => {
+                        actual = customWOAdvancer.allMatch(i => i > 0);
+                    });
+
+                    it('should report true', () => {
+                        expect(actual).to.be.true;
+                    });
+                });
+
+                describe('when anyMatch is called', () => {
+                    let actual: boolean;
+
+                    beforeEach(() => {
+                        actual = customWOAdvancer.anyMatch(i => i > 0);
+                    });
+
+                    it('should report true', () => {
+                        expect(actual).to.be.true;
+                    });
+                });
             });
         });
 
@@ -114,6 +172,7 @@ describe('AdvancerThen', () => {
 
     describe('when "then" is called in an "iterate" query', () => {
         let custom: Query<number>;
+        let customWOAdvancer: Query<number>;
 
         beforeEach(() => {
             let index = 0;
@@ -121,12 +180,46 @@ describe('AdvancerThen', () => {
                 index++;
                 return arrange[index % arrange.length];
             })
-                .then(n => collapse(n))
+                .then(
+                    n => collapseTrv(n),
+                    n => collapseAdv(n)
+                )
+                .filter(n => n % 2 !== 0);
+            customWOAdvancer = Query.iterate(arrange[index], () => {
+                index++;
+                return arrange[index % arrange.length];
+            })
+                .then(n => collapseTrv(n))
                 .filter(n => n % 2 !== 0);
         });
 
         it('should return a sequence', () => {
             expect(custom).to.not.be.undefined;
+            expect(customWOAdvancer).to.not.be.undefined;
+        });
+
+        describe('when the sequence has no Advancer', () => {
+            it('should throw an error', () => {
+                let actual: Error;
+                try {
+                    getResultFromIteration(customWOAdvancer);
+                } catch (e) {
+                    actual = e;
+                }
+                expect(actual).to.not.be.undefined;
+            });
+
+            describe('when anyMatch is called', () => {
+                let actual: boolean;
+
+                beforeEach(() => {
+                    actual = customWOAdvancer.anyMatch(i => i > 10);
+                });
+
+                it('should report true', () => {
+                    expect(actual).to.be.true;
+                });
+            });
         });
 
         describe('when first is called', () => {
@@ -184,6 +277,7 @@ describe('AdvancerThen', () => {
 
     describe('when "then" is called in an "generate" query', () => {
         let custom: Query<number>;
+        let customWOAdvancer: Query<number>;
 
         beforeEach(() => {
             let index = 0;
@@ -191,11 +285,46 @@ describe('AdvancerThen', () => {
                 const result = arrange[index % arrange.length];
                 index++;
                 return result;
-            }).then(n => collapse(n));
+            }).then(
+                n => collapseTrv(n),
+                n => collapseAdv(n)
+            );
+            customWOAdvancer = Query.generate(() => {
+                const result = arrange[index % arrange.length];
+                index++;
+                return result;
+            })
+                .then(n => collapseTrv(n))
+                .filter(n => n % 2 !== 0);
         });
 
         it('should return a sequence', () => {
             expect(custom).to.not.be.undefined;
+            expect(customWOAdvancer).to.not.be.undefined;
+        });
+
+        describe('when the sequence has no Advancer', () => {
+            it('should throw an error', () => {
+                let actual: Error;
+                try {
+                    getResultFromIteration(customWOAdvancer);
+                } catch (e) {
+                    actual = e;
+                }
+                expect(actual).to.not.be.undefined;
+            });
+
+            describe('when anyMatch is called', () => {
+                let actual: boolean;
+
+                beforeEach(() => {
+                    actual = customWOAdvancer.anyMatch(i => i > 10);
+                });
+
+                it('should report true', () => {
+                    expect(actual).to.be.true;
+                });
+            });
         });
 
         describe('when first is called', () => {

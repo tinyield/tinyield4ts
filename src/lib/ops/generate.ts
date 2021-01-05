@@ -1,17 +1,16 @@
-import {Advancer} from '../advancer';
 import {Yield} from '../yield';
-import {IteratorYieldImpl} from '../utils/iterator-yield';
+import {Operation} from '../operation';
 
-export class AdvancerGenerate<T> extends Advancer<T> {
+export class Generate<T> implements Operation<T> {
     private readonly supplier: () => T;
 
     constructor(supplier: () => T) {
-        super();
         this.supplier = supplier;
     }
 
-    next(): IteratorResult<T> {
-        return new IteratorYieldImpl(this.supplier());
+    public tryAdvance(yld: Yield<T>): boolean {
+        yld(this.supplier());
+        return true;
     }
 
     traverse(yld: Yield<T>): void {

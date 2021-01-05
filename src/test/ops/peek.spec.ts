@@ -1,45 +1,45 @@
 import {of, Query} from '../../lib/query';
-import {Beverage, getDinnerBeverages, getPackOfBeer} from '../model/beverage';
+import {Beverage, getDinnerBeverages} from '../model/beverage';
 import {getResultFromIteration, getResultFromTraversal} from '../utils/traversal-utils';
 import {assertSameArray} from '../utils/testing-utils';
 import {expect} from 'chai';
 
-describe('AdvancerConcat', () => {
+describe('Peek', () => {
     let dinnerBeverages: Beverage[];
-    let packOfBeer: Beverage[];
     let dinnerBeveragesQuery: Query<Beverage>;
-    let beerPackQuery: Query<Beverage>;
 
     beforeEach(() => {
         dinnerBeverages = getDinnerBeverages();
-        packOfBeer = getPackOfBeer();
         dinnerBeveragesQuery = of(dinnerBeverages);
-        beerPackQuery = of(packOfBeer);
     });
 
-    describe('when "concat" is called', () => {
-        let concat: Query<Beverage>;
+    describe('when "peek" is called', () => {
+        let peeked: Query<Beverage>;
+        let peekedActual: string[];
+        let peekedExpectation: string[];
         let expectation: Beverage[];
 
         beforeEach(() => {
-            expectation = [...packOfBeer, ...dinnerBeverages];
-            concat = beerPackQuery.concat(dinnerBeveragesQuery);
+            expectation = dinnerBeverages;
+            peekedExpectation = expectation.map(elem => elem.name);
+            peekedActual = [];
+            peeked = dinnerBeveragesQuery.peek(element => peekedActual.push(element.name));
         });
 
         it('should return a new sequence', () => {
-            expect(concat).not.to.equal(beerPackQuery as unknown);
-            expect(concat).not.to.equal(dinnerBeveragesQuery as unknown);
+            expect(peeked).not.to.equal(dinnerBeveragesQuery as unknown);
         });
 
         describe('when the sequence is iterated', () => {
             let actual: Beverage[];
 
             beforeEach(() => {
-                actual = getResultFromIteration(concat);
+                actual = getResultFromIteration(peeked);
             });
 
-            it('should report elements', () => {
+            it('should report the mapped elements', () => {
                 assertSameArray(actual, expectation);
+                assertSameArray(peekedActual, peekedExpectation);
             });
         });
 
@@ -47,11 +47,12 @@ describe('AdvancerConcat', () => {
             let actual: Beverage[];
 
             beforeEach(() => {
-                actual = getResultFromTraversal(concat);
+                actual = getResultFromTraversal(peeked);
             });
 
-            it('should report elements', () => {
+            it('should report the mapped elements', () => {
                 assertSameArray(actual, expectation);
+                assertSameArray(peekedActual, peekedExpectation);
             });
         });
     });

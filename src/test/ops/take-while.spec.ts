@@ -1,10 +1,10 @@
 import {of, Query} from '../../lib/query';
-import {Beverage, getDinnerBeverages} from '../model/beverage';
+import {Beverage, COLA, getDinnerBeverages} from '../model/beverage';
 import {getResultFromIteration, getResultFromTraversal} from '../utils/traversal-utils';
 import {assertSameArray} from '../utils/testing-utils';
 import {expect} from 'chai';
 
-describe('AdvancerTake', () => {
+describe('TakeWhile', () => {
     let dinnerBeverages: Beverage[];
     let dinnerBeveragesQuery: Query<Beverage>;
 
@@ -13,13 +13,13 @@ describe('AdvancerTake', () => {
         dinnerBeveragesQuery = of(dinnerBeverages);
     });
 
-    describe('when "take" is called', () => {
+    describe('when "takeWhile" is called', () => {
         let taken: Query<Beverage>;
         let expectation: Beverage[];
 
         beforeEach(() => {
-            expectation = [dinnerBeverages[0], dinnerBeverages[1]];
-            taken = dinnerBeveragesQuery.take(2).take(3);
+            expectation = [COLA];
+            taken = dinnerBeveragesQuery.takeWhile(elem => elem.cost < 2);
         });
 
         it('should return a new sequence', () => {
@@ -36,6 +36,12 @@ describe('AdvancerTake', () => {
             it('should have taken the requested number of elements', () => {
                 assertSameArray(actual, expectation);
             });
+
+            describe('after the sequence is iterated, when tryAdvance is called', () => {
+                it('should return false', () => {
+                    expect(taken.tryAdvance(() => {})).to.be.false;
+                });
+            });
         });
 
         describe('when the sequence is traversed', () => {
@@ -47,6 +53,18 @@ describe('AdvancerTake', () => {
 
             it('should have taken the requested number of elements', () => {
                 assertSameArray(actual, expectation);
+            });
+
+            describe('after the sequence is traversed, when traverse is called', () => {
+                let actual = false;
+
+                beforeEach(() => {
+                    taken.traverse(() => (actual = true));
+                });
+
+                it('should do nothing', () => {
+                    expect(actual).to.be.false;
+                });
             });
         });
     });

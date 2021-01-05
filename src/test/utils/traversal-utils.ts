@@ -2,9 +2,9 @@ import {Query} from '../../lib/query';
 
 export function getResultFromIteration<T>(query: Query<T>): T[] {
     const result: T[] = [];
-    let current: IteratorResult<T>;
-    while (!(current = query.next()).done) {
-        result.push(current.value as T);
+    let current: T;
+    while (query.tryAdvance(elem => (current = elem))) {
+        result.push(current);
     }
     return result;
 }

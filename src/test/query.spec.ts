@@ -293,7 +293,7 @@ describe('Query', () => {
         let sequence: Query<Beverage>;
 
         beforeEach(() => {
-            sequence = iterate(BEER, beverage => new Beverage(beverage.name, beverage.cost + 1));
+            sequence = iterate(BEER, beverage => new Beverage(beverage.name, beverage.cost + 1)).take(10);
         });
 
         it('should return a sequence', () => {
@@ -348,6 +348,21 @@ describe('Query', () => {
             });
 
             it('should return the first element of the Query', () => {
+                expect(actual).to.not.be.undefined;
+                expect(actual).to.deep.equal(expectation);
+            });
+        });
+
+        describe('when "count" is called', () => {
+            let actual: number;
+            let expectation: number;
+
+            beforeEach(() => {
+                actual = sequence.count();
+                expectation = 10;
+            });
+
+            it('should return the size of the Query', () => {
                 expect(actual).to.not.be.undefined;
                 expect(actual).to.deep.equal(expectation);
             });

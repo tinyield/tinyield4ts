@@ -3,7 +3,7 @@
     "compilerOptions": {
         "rootDir": "src",
         "sourceMap": true,
-        "target": "esNEXT",
+        "target": "es2020",
         "declaration": true,
         "resolveJsonModule": true,
         "outDir": "build",
